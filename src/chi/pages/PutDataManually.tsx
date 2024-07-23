@@ -3,13 +3,12 @@ import {
   Checkbox,
   CheckboxGroup,
   Input,
-  Radio,
-  RadioGroup,
+  Select,
+  SelectItem,
   Tooltip,
 } from "@nextui-org/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { chiSquareTable } from "../helpers/chiCuadradoDatosTabla";
 
 //*Esta interfaz es para que los eventos puedan recibir tanto como un changeEven asi como un objeto que sea igual a este junto con su tipado { target: { name: string; value: string } }
 type ChangeEventOrObject =
@@ -50,7 +49,13 @@ interface ItemsData {
   item4: ItemFormat;
   item5: ItemFormat;
 }
-
+interface ItemNominalNumerico {
+  item1: string;
+  item2: string;
+  item3: string;
+  item4: string;
+  item5: string;
+}
 const PutDataManually = () => {
   const inputRef1 = useRef<HTMLInputElement>(null);
   //*Este useState se va a utilizar para poder almacenar el nombre y los dato binarios de los items
@@ -84,6 +89,15 @@ const PutDataManually = () => {
   const [datosTablaContigencia, setDatosTablaContigencia] = useState<
     DatoHoja[]
   >([]);
+  const [instances, setInstances] = useState<string>("");
+  const [selectionNominalNumeric, setSetselectionNominalNumeric] =
+    useState<ItemNominalNumerico>({
+      item1: "",
+      item2: "",
+      item3: "",
+      item4: "",
+      item5: "",
+    });
 
   //*Este useEfffect es para poder cambiar el state en el caso de que algun item en el apartado nombre tiene valor de ser asi se activara la tabla
   useEffect(() => {
@@ -243,7 +257,7 @@ const PutDataManually = () => {
     );
     //*Este if es para cuando el maximoLength sea igual a 0 no se puede acceder a la logica
     if (maximoLength === 0) {
-      toast.error(`Debes de tener datos en almenos dos columnas`);
+      toast.error(`Debes de tener datos`);
       return;
     }
 
@@ -334,7 +348,7 @@ const PutDataManually = () => {
   };
   //*Esta funcion valida si hay solo 2 items seleccionados
   const handleItemsSelected = (e: string[]): void => {
-    if (e.length > 2) {
+    if (e.length > 3) {
       setIsValid(true);
     } else {
       setIsValid(false);
@@ -347,7 +361,11 @@ const PutDataManually = () => {
     let dato = "";
     switch (id) {
       case 1:
-        for (let i = 0; i < 200; i++) {
+        if (instances === "") {
+          toast.error("Tienes que poner un numero de instancias");
+          break;
+        }
+        for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
             dato += " ";
           } else {
@@ -359,7 +377,11 @@ const PutDataManually = () => {
 
         break;
       case 2:
-        for (let i = 0; i < 200; i++) {
+        if (instances === "") {
+          toast.error("Tienes que poner un numero de instancias");
+          break;
+        }
+        for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
             dato += " ";
           } else {
@@ -371,7 +393,11 @@ const PutDataManually = () => {
 
         break;
       case 3:
-        for (let i = 0; i < 200; i++) {
+        if (instances === "") {
+          toast.error("Tienes que poner un numero de instancias");
+          break;
+        }
+        for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
             dato += " ";
           } else {
@@ -383,7 +409,11 @@ const PutDataManually = () => {
 
         break;
       case 4:
-        for (let i = 0; i < 200; i++) {
+        if (instances === "") {
+          toast.error("Tienes que poner un numero de instancias");
+          break;
+        }
+        for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
             dato += " ";
           } else {
@@ -395,7 +425,11 @@ const PutDataManually = () => {
 
         break;
       case 5:
-        for (let i = 0; i < 200; i++) {
+        if (instances === "") {
+          toast.error("Tienes que poner un numero de instancias");
+          break;
+        }
+        for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
             dato += " ";
           } else {
@@ -406,49 +440,15 @@ const PutDataManually = () => {
         handleOnChangeItemValues({ target: { name: "item5", value: dato } });
 
         break;
-      case 6:
-        for (let i = 0; i < 200; i++) {
-          if (i % 2 === 0) {
-            dato += " ";
-          } else {
-            dato += Math.random() >= 0.5 ? "1" : "0";
-          }
-        }
-        //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
-        handleOnChangeItemValues({ target: { name: "item6", value: dato } });
 
-        break;
-      case 7:
-        for (let i = 0; i < 200; i++) {
-          if (i % 2 === 0) {
-            dato += " ";
-          } else {
-            dato += Math.random() >= 0.5 ? "1" : "0";
-          }
-        }
-        //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
-        handleOnChangeItemValues({ target: { name: "item7", value: dato } });
-
-        break;
-      case 8:
-        for (let i = 0; i < 200; i++) {
-          if (i % 2 === 0) {
-            dato += " ";
-          } else {
-            dato += Math.random() >= 0.5 ? "1" : "0";
-          }
-        }
-        //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
-        handleOnChangeItemValues({ target: { name: "item8", value: dato } });
-
-        break;
       default:
         break;
     }
   };
+  console.log(selectionNominalNumeric);
   const handleSelectItemsSubmit = (): void => {
-    if (isValid || itemsSeleccionados.length < 2) {
-      toast.error("Solo puedes seleccionar DOS items");
+    if (isValid || itemsSeleccionados.length < 3) {
+      toast.error("Solo puedes seleccionar TRES items");
       return;
     }
     //*generar nuevo arreglo con los objetos que se va a trabajar
@@ -462,6 +462,10 @@ const PutDataManually = () => {
     //*Los nuevos datos fitrados osea los dos items
     setDatosTablaContigencia(nuevosDatosFiltrados);
   };
+  const handleNumeroInstacias = (e: ChangeEvent<HTMLInputElement>) => {
+    setInstances(e.target.value);
+  };
+
   return (
     <>
       <div className="container mx-auto grid grid-cols-2 gap-5 ">
@@ -510,6 +514,14 @@ const PutDataManually = () => {
               value={items.item5.nombre}
               variant={"underlined"}
               label="Item5"
+            />
+            <Input
+              name="instances"
+              onChange={(e) => handleNumeroInstacias(e)}
+              type="text"
+              value={instances}
+              variant={"underlined"}
+              label="Numero de instancias"
             />
           </div>
           <div className="my-5 fixed top-1 left-6">
@@ -738,6 +750,20 @@ const PutDataManually = () => {
 
             {items.item1.nombre && (
               <div className=" flex gap-1 items-center">
+                <Select
+                  label=""
+                  className="w-[10rem]"
+                  onChange={(e) =>
+                    setSetselectionNominalNumeric((prev) => ({
+                      ...prev,
+                      item1: e.target.value,
+                    }))
+                  }
+                  color="primary"
+                >
+                  <SelectItem key={"nominal"}>Nominal</SelectItem>
+                  <SelectItem key={"numerico"}>Numerico</SelectItem>
+                </Select>
                 <Input
                   ref={inputRef1}
                   name="item1"
@@ -759,6 +785,20 @@ const PutDataManually = () => {
             )}
             {items.item2.nombre && (
               <div className=" flex gap-1 items-center">
+                <Select
+                  label=""
+                  className="w-[10rem]"
+                  onChange={(e) =>
+                    setSetselectionNominalNumeric((prev) => ({
+                      ...prev,
+                      item2: e.target.value,
+                    }))
+                  }
+                  color="primary"
+                >
+                  <SelectItem key={"nominal"}>Nominal</SelectItem>
+                  <SelectItem key={"numerico"}>Numerico</SelectItem>
+                </Select>
                 <Input
                   name="item2"
                   onChange={(e) => handleOnChangeItemValues(e)}
@@ -780,6 +820,20 @@ const PutDataManually = () => {
 
             {items.item3.nombre && (
               <div className="flex gap-1 items-center">
+                <Select
+                  label=""
+                  className="w-[10rem]"
+                  onChange={(e) =>
+                    setSetselectionNominalNumeric((prev) => ({
+                      ...prev,
+                      item3: e.target.value,
+                    }))
+                  }
+                  color="primary"
+                >
+                  <SelectItem key={"nominal"}>Nominal</SelectItem>
+                  <SelectItem key={"numerico"}>Numerico</SelectItem>
+                </Select>
                 <Input
                   name="item3"
                   onChange={(e) => handleOnChangeItemValues(e)}
@@ -801,6 +855,20 @@ const PutDataManually = () => {
 
             {items.item4.nombre && (
               <div className="flex gap-1 items-center">
+                <Select
+                  label=""
+                  className="w-[10rem]"
+                  onChange={(e) =>
+                    setSetselectionNominalNumeric((prev) => ({
+                      ...prev,
+                      item4: e.target.value,
+                    }))
+                  }
+                  color="primary"
+                >
+                  <SelectItem key={"nominal"}>Nominal</SelectItem>
+                  <SelectItem key={"numerico"}>Numerico</SelectItem>
+                </Select>
                 <Input
                   name="item4"
                   onChange={(e) => handleOnChangeItemValues(e)}
@@ -822,6 +890,20 @@ const PutDataManually = () => {
 
             {items.item5.nombre && (
               <div className="flex gap-1 items-center">
+                <Select
+                  label=""
+                  className="w-[10rem]"
+                  onChange={(e) =>
+                    setSetselectionNominalNumeric((prev) => ({
+                      ...prev,
+                      item5: e.target.value,
+                    }))
+                  }
+                  color="primary"
+                >
+                  <SelectItem key={"nominal"}>Nominal</SelectItem>
+                  <SelectItem key={"numerico"}>Numerico</SelectItem>
+                </Select>
                 <Input
                   name="item5"
                   onChange={(e) => handleOnChangeItemValues(e)}
