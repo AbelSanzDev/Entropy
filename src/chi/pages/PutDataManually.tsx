@@ -33,6 +33,7 @@ interface ItemArray {
   item3: ItemArrayFormat;
   item4: ItemArrayFormat;
   item5: ItemArrayFormat;
+  clase: ItemArrayFormat;
 }
 interface ItemArrayObjetos {
   item1?: ItemArrayFormat;
@@ -65,6 +66,7 @@ const PutDataManually = () => {
     item3: { nombre: "", datos: "" },
     item4: { nombre: "", datos: "" },
     item5: { nombre: "", datos: "" },
+    clase: { nombre: "", datos: "" },
   });
   //*Este estado es para poder saber si items tiene valores
   const [state, setState] = useState<boolean>(false);
@@ -75,6 +77,7 @@ const PutDataManually = () => {
     item3: { datosArray: [] },
     item4: { datosArray: [] },
     item5: { datosArray: [] },
+    clase: { datosArray: [] },
   });
   const [nuevosDatosUsados, setNuevosDatosUsados] = useState<ItemArrayObjetos>(
     {}
@@ -98,6 +101,18 @@ const PutDataManually = () => {
       item4: "",
       item5: "",
     });
+
+  //*Este useState lo que  permite es almacenar el valor de X1 Y X2 los cuales son lo valores alamacenados de los numericos
+
+  const [x1X2, setX1X2] = useState({
+    item1: { x1: "", x2: "" },
+    item2: { x1: "", x2: "" },
+    item3: { x1: "", x2: "" },
+    item4: { x1: "", x2: "" },
+    item5: { x1: "", x2: "" },
+  });
+
+  //!En  este se creara para poder alamacenar los datos nominales(Falta crear)...
 
   //*Este useEfffect es para poder cambiar el state en el caso de que algun item en el apartado nombre tiene valor de ser asi se activara la tabla
   useEffect(() => {
@@ -136,6 +151,7 @@ const PutDataManually = () => {
       item3: { nombre: "", datos: "" },
       item4: { nombre: "", datos: "" },
       item5: { nombre: "", datos: "" },
+      clase: { nombre: "", datos: "" },
     });
 
     setState(false);
@@ -146,6 +162,7 @@ const PutDataManually = () => {
       item3: { datosArray: [] },
       item4: { datosArray: [] },
       item5: { datosArray: [] },
+      clase: { datosArray: [] },
     });
 
     setNuevosDatosUsados({});
@@ -157,11 +174,21 @@ const PutDataManually = () => {
     setItemsSeleccionados([]);
 
     setDatosTablaContigencia([]);
+
+    setX1X2({
+      item1: { x1: "", x2: "" },
+      item2: { x1: "", x2: "" },
+      item3: { x1: "", x2: "" },
+      item4: { x1: "", x2: "" },
+      item5: { x1: "", x2: "" },
+    });
   };
   const handleOnChangeItemValues = (e: ChangeEventOrObject): void => {
     const { name, value } = e.target;
     const lon = value.length;
     let insideState: boolean = true;
+    if (selectionNominalNumeric) {
+    }
     //*Este for dentro tiene un if el cual valida que los datos sean solo 1 y 0 y el " "
     for (let i: number = 0; i < lon; i++) {
       if (
@@ -204,6 +231,29 @@ const PutDataManually = () => {
     }
   };
 
+  //*Esta funcion es para almacenar el valor de x1 y x2
+  const handleChangeValueX1X2 = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const name = e.target.name;
+    //*El name es un string el cual esta separado por un " " y con el split lo separamos para poder generar unn arreglo con los valore nuevos
+    //*Se hace un detructuring para poder usar el valor de forma independiente
+    const [nombre, x] = name.split(" ");
+
+    const regex = /^\d*$/;
+
+    if (regex.test(value)) {
+      setX1X2((prev) => ({
+        ...prev,
+        [nombre]: {
+          ...prev[nombre],
+          [x]: value,
+        },
+      }));
+    } else {
+      toast.error("error");
+    }
+  };
+
   //*Esta funcion convertira el string de los valores de las columnas a arreglo para iterarlo en la tabla en tiempo real
   const itemKeys = Object.keys(datosArray) as Array<keyof ItemArray>;
   const maxLength = Math.max(
@@ -211,6 +261,10 @@ const PutDataManually = () => {
   );
   //*Funcion para calcular todo
   const handleGenerarCalculos = (): void => {
+    if (items.clase.nombre === "") {
+      toast.error("No ha inicializado la Clase o no tiene nombre");
+      return;
+    }
     //*Destructuring para sacar el valor de los datos
     const { datosArray: datos1 } = datosArray.item1;
     const { datosArray: datos2 } = datosArray.item2;
@@ -356,6 +410,7 @@ const PutDataManually = () => {
     }
   };
 
+  console.log(selectionNominalNumeric);
   //*Esta funcion sirve para el llenado de datos aleatorios
   const handleLlenadoDeDatosAleatorios = (id: number): void => {
     let dato = "";
@@ -365,6 +420,22 @@ const PutDataManually = () => {
           toast.error("Tienes que poner un numero de instancias");
           break;
         }
+        if (selectionNominalNumeric.item1 === "") {
+          toast.error("Debes seleccionar si el dato sara nominal o numerico");
+          break;
+        }
+        if (selectionNominalNumeric.item1 === "nominal") {
+          if (x1X2.item1.x1 === null || x1X2.item1.x2 === null) {
+          }
+        }
+        for (let i = 0; i < parseInt(instances) * 2; i++) {
+          if (i % 2 === 0) {
+            dato += " ";
+          } else {
+            dato += Math.random() >= 0.5 ? "1" : "0";
+          }
+        }
+
         for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
             dato += " ";
@@ -440,6 +511,22 @@ const PutDataManually = () => {
         handleOnChangeItemValues({ target: { name: "item5", value: dato } });
 
         break;
+      case 6:
+        if (instances === "") {
+          toast.error("Tienes que poner un numero de instancias");
+          break;
+        }
+        for (let i = 0; i < parseInt(instances) * 2; i++) {
+          if (i % 2 === 0) {
+            dato += " ";
+          } else {
+            dato += Math.random() >= 0.5 ? "1" : "0";
+          }
+        }
+        //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
+        handleOnChangeItemValues({ target: { name: "clase", value: dato } });
+
+        break;
 
       default:
         break;
@@ -465,6 +552,7 @@ const PutDataManually = () => {
   const handleNumeroInstacias = (e: ChangeEvent<HTMLInputElement>) => {
     setInstances(e.target.value);
   };
+  console.log(x1X2);
 
   return (
     <>
@@ -514,6 +602,14 @@ const PutDataManually = () => {
               value={items.item5.nombre}
               variant={"underlined"}
               label="Item5"
+            />
+            <Input
+              name="clase"
+              onChange={(e) => handleOnChangeItem(e)}
+              type="text"
+              value={items.clase.nombre}
+              variant={"underlined"}
+              label="Clase"
             />
             <Input
               name="instances"
@@ -764,6 +860,28 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
+
+                <Input
+                  ref={inputRef1}
+                  name="item1 x1"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item1.x1!}
+                  variant={"underlined"}
+                  label="X1"
+                  className="w-10"
+                />
+
+                <Input
+                  ref={inputRef1}
+                  name="item1 x2"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item1.x2!}
+                  variant={"underlined"}
+                  label="X2"
+                  className="w-10"
+                />
                 <Input
                   ref={inputRef1}
                   name="item1"
@@ -800,6 +918,27 @@ const PutDataManually = () => {
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
                 <Input
+                  ref={inputRef1}
+                  name="item2 x1"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item2.x1!}
+                  variant={"underlined"}
+                  label="X1"
+                  className="w-10"
+                />
+
+                <Input
+                  ref={inputRef1}
+                  name="item2 x2"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item2.x2!}
+                  variant={"underlined"}
+                  label="X2"
+                  className="w-10"
+                />
+                <Input
                   name="item2"
                   onChange={(e) => handleOnChangeItemValues(e)}
                   type="text"
@@ -834,6 +973,27 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
+                <Input
+                  ref={inputRef1}
+                  name="item3 x1"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item3.x1!}
+                  variant={"underlined"}
+                  label="X1"
+                  className="w-10"
+                />
+
+                <Input
+                  ref={inputRef1}
+                  name="item3 x2"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item3.x2!}
+                  variant={"underlined"}
+                  label="X2"
+                  className="w-10"
+                />
                 <Input
                   name="item3"
                   onChange={(e) => handleOnChangeItemValues(e)}
@@ -870,6 +1030,27 @@ const PutDataManually = () => {
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
                 <Input
+                  ref={inputRef1}
+                  name="item4 x1"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item4.x1!}
+                  variant={"underlined"}
+                  label="X1"
+                  className="w-10"
+                />
+
+                <Input
+                  ref={inputRef1}
+                  name="item4 x2"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item4.x2!}
+                  variant={"underlined"}
+                  label="X2"
+                  className="w-10"
+                />
+                <Input
                   name="item4"
                   onChange={(e) => handleOnChangeItemValues(e)}
                   type="text"
@@ -905,6 +1086,27 @@ const PutDataManually = () => {
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
                 <Input
+                  ref={inputRef1}
+                  name="item5 x1"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item5.x1!}
+                  variant={"underlined"}
+                  label="X1"
+                  className="w-10"
+                />
+
+                <Input
+                  ref={inputRef1}
+                  name="item5 x2"
+                  onChange={(e) => handleChangeValueX1X2(e)}
+                  type="text"
+                  value={x1X2.item5.x2!}
+                  variant={"underlined"}
+                  label="X2"
+                  className="w-10"
+                />
+                <Input
                   name="item5"
                   onChange={(e) => handleOnChangeItemValues(e)}
                   type="text"
@@ -916,6 +1118,26 @@ const PutDataManually = () => {
                   color="primary"
                   onClick={() => {
                     handleLlenadoDeDatosAleatorios(5);
+                  }}
+                >
+                  Random
+                </Button>
+              </div>
+            )}
+            {items.clase.nombre && (
+              <div className="flex gap-1 items-center">
+                <Input
+                  name="clase"
+                  onChange={(e) => handleOnChangeItemValues(e)}
+                  type="text"
+                  value={items.clase.datos}
+                  variant={"underlined"}
+                  label="Datos de Clase"
+                />
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    handleLlenadoDeDatosAleatorios(6);
                   }}
                 >
                   Random
@@ -989,6 +1211,9 @@ const PutDataManually = () => {
                       </th>
                       <th className="border-b-2 border-gray-300 py-2 px-4 text-left text-sm font-semibold text-gray-700">
                         {items.item5.nombre}
+                      </th>
+                      <th className="border-b-2 border-gray-300 py-2 px-4 text-left text-sm font-semibold text-gray-700">
+                        {items.clase.nombre}
                       </th>
                     </tr>
                   </thead>
