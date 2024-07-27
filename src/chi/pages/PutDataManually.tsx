@@ -27,6 +27,17 @@ interface ItemFormat {
 interface ItemArrayFormat {
   datosArray: number[];
 }
+interface ItemX1X2Format {
+  x1: string;
+  x2: string;
+}
+interface ItemX1X2 {
+  item1: ItemX1X2Format;
+  item2: ItemX1X2Format;
+  item3: ItemX1X2Format;
+  item4: ItemX1X2Format;
+  item5: ItemX1X2Format;
+}
 interface ItemArray {
   item1: ItemArrayFormat;
   item2: ItemArrayFormat;
@@ -104,7 +115,7 @@ const PutDataManually = () => {
 
   //*Este useState lo que  permite es almacenar el valor de X1 Y X2 los cuales son lo valores alamacenados de los numericos
 
-  const [x1X2, setX1X2] = useState({
+  const [x1X2, setX1X2] = useState<ItemX1X2>({
     item1: { x1: "", x2: "" },
     item2: { x1: "", x2: "" },
     item3: { x1: "", x2: "" },
@@ -245,7 +256,8 @@ const PutDataManually = () => {
       setX1X2((prev) => ({
         ...prev,
         [nombre]: {
-          ...prev[nombre],
+          //*Para decir que nombre es una clave valida de ItemX1X2
+          ...prev[nombre as keyof ItemX1X2],
           [x]: value,
         },
       }));
@@ -253,6 +265,8 @@ const PutDataManually = () => {
       toast.error("error");
     }
   };
+
+  console.log(x1X2);
 
   //*Esta funcion convertira el string de los valores de las columnas a arreglo para iterarlo en la tabla en tiempo real
   const itemKeys = Object.keys(datosArray) as Array<keyof ItemArray>;
@@ -809,41 +823,6 @@ const PutDataManually = () => {
           </div>
           {/**Estos input son para poner los datos de las columnas */}
           <div className="my-5">
-            <div className="flex items-center gap-2">
-              <Tooltip
-                size="lg"
-                content="Para poner los datos se tienen que separar por espacios, por ejemplo: 1 0 1 0 1 0 0 1 0 1 0 1 0 0 1 0"
-                className="w-[20rem] font-bold text-xl"
-              >
-                <div className="w-10">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      {" "}
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.58584 14.3415 10.232 13.883 10.704C13.7907 10.7989 13.7027 10.8869 13.6187 10.9708C13.4029 11.1864 13.2138 11.3753 13.0479 11.5885C12.8289 11.8699 12.75 12.0768 12.75 12.25V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V12.25C11.25 11.5948 11.555 11.0644 11.8642 10.6672C12.0929 10.3733 12.3804 10.0863 12.6138 9.85346C12.6842 9.78321 12.7496 9.71789 12.807 9.65877C13.0046 9.45543 13.125 9.18004 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z"
-                        fill="#006FEE"
-                      ></path>{" "}
-                    </g>
-                  </svg>
-                </div>
-              </Tooltip>
-              <h1 className=" font-thin text-sm">
-                Nota importante antes de poner datos manualmente
-              </h1>
-            </div>
-
             {items.item1.nombre && (
               <div className=" flex gap-1 items-center">
                 <Select
@@ -860,28 +839,32 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
+                {selectionNominalNumeric.item1 === "nominal" && (
+                  <>
+                    <Input
+                      ref={inputRef1}
+                      name="item1 x1"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item1.x1!}
+                      variant={"underlined"}
+                      label="X1"
+                      className="w-10"
+                    />
 
-                <Input
-                  ref={inputRef1}
-                  name="item1 x1"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item1.x1!}
-                  variant={"underlined"}
-                  label="X1"
-                  className="w-10"
-                />
+                    <Input
+                      ref={inputRef1}
+                      name="item1 x2"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item1.x2!}
+                      variant={"underlined"}
+                      label="X2"
+                      className="w-10"
+                    />
+                  </>
+                )}
 
-                <Input
-                  ref={inputRef1}
-                  name="item1 x2"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item1.x2!}
-                  variant={"underlined"}
-                  label="X2"
-                  className="w-10"
-                />
                 <Input
                   ref={inputRef1}
                   name="item1"
@@ -917,27 +900,32 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
-                <Input
-                  ref={inputRef1}
-                  name="item2 x1"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item2.x1!}
-                  variant={"underlined"}
-                  label="X1"
-                  className="w-10"
-                />
+                {selectionNominalNumeric.item2 === "nominal" && (
+                  <>
+                    <Input
+                      ref={inputRef1}
+                      name="item2 x1"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item2.x1!}
+                      variant={"underlined"}
+                      label="X1"
+                      className="w-10"
+                    />
 
-                <Input
-                  ref={inputRef1}
-                  name="item2 x2"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item2.x2!}
-                  variant={"underlined"}
-                  label="X2"
-                  className="w-10"
-                />
+                    <Input
+                      ref={inputRef1}
+                      name="item2 x2"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item2.x2!}
+                      variant={"underlined"}
+                      label="X2"
+                      className="w-10"
+                    />
+                  </>
+                )}
+
                 <Input
                   name="item2"
                   onChange={(e) => handleOnChangeItemValues(e)}
@@ -956,7 +944,6 @@ const PutDataManually = () => {
                 </Button>
               </div>
             )}
-
             {items.item3.nombre && (
               <div className="flex gap-1 items-center">
                 <Select
@@ -973,27 +960,32 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
-                <Input
-                  ref={inputRef1}
-                  name="item3 x1"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item3.x1!}
-                  variant={"underlined"}
-                  label="X1"
-                  className="w-10"
-                />
+                {selectionNominalNumeric.item3 === "nominal" && (
+                  <>
+                    <Input
+                      ref={inputRef1}
+                      name="item3 x1"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item3.x1!}
+                      variant={"underlined"}
+                      label="X1"
+                      className="w-10"
+                    />
 
-                <Input
-                  ref={inputRef1}
-                  name="item3 x2"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item3.x2!}
-                  variant={"underlined"}
-                  label="X2"
-                  className="w-10"
-                />
+                    <Input
+                      ref={inputRef1}
+                      name="item3 x2"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item3.x2!}
+                      variant={"underlined"}
+                      label="X2"
+                      className="w-10"
+                    />
+                  </>
+                )}
+
                 <Input
                   name="item3"
                   onChange={(e) => handleOnChangeItemValues(e)}
@@ -1012,7 +1004,6 @@ const PutDataManually = () => {
                 </Button>
               </div>
             )}
-
             {items.item4.nombre && (
               <div className="flex gap-1 items-center">
                 <Select
@@ -1029,27 +1020,32 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
-                <Input
-                  ref={inputRef1}
-                  name="item4 x1"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item4.x1!}
-                  variant={"underlined"}
-                  label="X1"
-                  className="w-10"
-                />
+                {selectionNominalNumeric.item4 === "nominal" && (
+                  <>
+                    <Input
+                      ref={inputRef1}
+                      name="item4 x1"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item4.x1!}
+                      variant={"underlined"}
+                      label="X1"
+                      className="w-10"
+                    />
 
-                <Input
-                  ref={inputRef1}
-                  name="item4 x2"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item4.x2!}
-                  variant={"underlined"}
-                  label="X2"
-                  className="w-10"
-                />
+                    <Input
+                      ref={inputRef1}
+                      name="item4 x2"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item4.x2!}
+                      variant={"underlined"}
+                      label="X2"
+                      className="w-10"
+                    />
+                  </>
+                )}
+
                 <Input
                   name="item4"
                   onChange={(e) => handleOnChangeItemValues(e)}
@@ -1068,7 +1064,6 @@ const PutDataManually = () => {
                 </Button>
               </div>
             )}
-
             {items.item5.nombre && (
               <div className="flex gap-1 items-center">
                 <Select
@@ -1085,27 +1080,32 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
-                <Input
-                  ref={inputRef1}
-                  name="item5 x1"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item5.x1!}
-                  variant={"underlined"}
-                  label="X1"
-                  className="w-10"
-                />
+                {selectionNominalNumeric.item5 === "nominal" && (
+                  <>
+                    <Input
+                      ref={inputRef1}
+                      name="item5 x1"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item5.x1!}
+                      variant={"underlined"}
+                      label="X1"
+                      className="w-10"
+                    />
 
-                <Input
-                  ref={inputRef1}
-                  name="item5 x2"
-                  onChange={(e) => handleChangeValueX1X2(e)}
-                  type="text"
-                  value={x1X2.item5.x2!}
-                  variant={"underlined"}
-                  label="X2"
-                  className="w-10"
-                />
+                    <Input
+                      ref={inputRef1}
+                      name="item5 x2"
+                      onChange={(e) => handleChangeValueX1X2(e)}
+                      type="text"
+                      value={x1X2.item5.x2!}
+                      variant={"underlined"}
+                      label="X2"
+                      className="w-10"
+                    />
+                  </>
+                )}
+
                 <Input
                   name="item5"
                   onChange={(e) => handleOnChangeItemValues(e)}
