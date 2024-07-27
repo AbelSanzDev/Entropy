@@ -194,13 +194,47 @@ const PutDataManually = () => {
       item5: { x1: "", x2: "" },
     });
   };
+  console.log(items.item1);
   const handleOnChangeItemValues = (e: ChangeEventOrObject): void => {
     const { name, value } = e.target;
     const lon = value.length;
     let insideState: boolean = true;
-    if (selectionNominalNumeric) {
+    if (selectionNominalNumeric[name as keyof ItemNominalNumerico] === "") {
+      toast.error("Selecciona una opcion 'numerico O nominal'");
+      return;
     }
     //*Este for dentro tiene un if el cual valida que los datos sean solo 1 y 0 y el " "
+    if (
+      selectionNominalNumeric[name as keyof ItemNominalNumerico] === "nominal"
+    ) {
+      if (
+        x1X2[name as keyof ItemX1X2].x1 === "" &&
+        x1X2[name as keyof ItemX1X2].x2 === ""
+      ) {
+        toast.error("Llena los valores X1 X2");
+        return;
+      }
+      setItems((prevItems) => ({
+        ...prevItems,
+        [name]: {
+          ...prevItems[name as keyof ItemsData],
+          datos: value,
+        },
+      }));
+      //*En esta parte se almacena el array del string ingresado por el usuario
+      setdatosArray((prevItems) => ({
+        ...prevItems,
+        [name]: {
+          ...prevItems[name as keyof ItemsData],
+          //*El array se crea con split cada que el string tenga un espacio en " " va a hacer otro elemento para el array
+          datosArray: value
+            .split(" ")
+            .filter((elemento) => elemento !== "")
+            .map(String),
+        },
+      }));
+      return;
+    }
     for (let i: number = 0; i < lon; i++) {
       if (
         (value[i] === "1" && value[i + 1] === "1") ||
@@ -265,8 +299,6 @@ const PutDataManually = () => {
       toast.error("error");
     }
   };
-
-  console.log(x1X2);
 
   //*Esta funcion convertira el string de los valores de las columnas a arreglo para iterarlo en la tabla en tiempo real
   const itemKeys = Object.keys(datosArray) as Array<keyof ItemArray>;
@@ -424,7 +456,6 @@ const PutDataManually = () => {
     }
   };
 
-  console.log(selectionNominalNumeric);
   //*Esta funcion sirve para el llenado de datos aleatorios
   const handleLlenadoDeDatosAleatorios = (id: number): void => {
     let dato = "";
@@ -546,7 +577,7 @@ const PutDataManually = () => {
         break;
     }
   };
-  console.log(selectionNominalNumeric);
+
   const handleSelectItemsSubmit = (): void => {
     if (isValid || itemsSeleccionados.length < 3) {
       toast.error("Solo puedes seleccionar TRES items");
@@ -566,7 +597,132 @@ const PutDataManually = () => {
   const handleNumeroInstacias = (e: ChangeEvent<HTMLInputElement>) => {
     setInstances(e.target.value);
   };
-  console.log(x1X2);
+  //*Esta funcion es para poder poner el valor de nominales mediante los botones
+  const handleNominalSelectTypeData = (type: string, cases: number) => {
+    switch (cases) {
+      case 1:
+        if (type === ">") {
+          handleOnChangeItemValues({
+            target: { name: "item1", value: `<${x1X2.item1.x1} ` },
+          });
+          break;
+        }
+        if (type === "-") {
+          handleOnChangeItemValues({
+            target: {
+              name: "item1",
+              value: `${x1X2.item1.x1}-${x1X2.item1.x2} `,
+            },
+          });
+          break;
+        }
+        if (type === "<") {
+          handleOnChangeItemValues({
+            target: { name: "item1", value: `<${x1X2.item1.x2} ` },
+          });
+          break;
+        }
+        break;
+      case 2:
+        if (type === ">") {
+          handleOnChangeItemValues({
+            target: { name: "item2", value: `<${x1X2.item2.x1} ` },
+          });
+          break;
+        }
+        if (type === "-") {
+          handleOnChangeItemValues({
+            target: {
+              name: "item2",
+              value: `${x1X2.item2.x1}-${x1X2.item2.x2}`,
+            },
+          });
+          break;
+        }
+        if (type === "<") {
+          handleOnChangeItemValues({
+            target: { name: "item2", value: `<${x1X2.item2.x2}` },
+          });
+          break;
+        }
+        break;
+        break;
+      case 3:
+        if (type === ">") {
+          handleOnChangeItemValues({
+            target: { name: "item3", value: `<${x1X2.item3.x1}` },
+          });
+          break;
+        }
+        if (type === "-") {
+          handleOnChangeItemValues({
+            target: {
+              name: "item3",
+              value: `${x1X2.item3.x1}-${x1X2.item3.x2}`,
+            },
+          });
+          break;
+        }
+        if (type === "<") {
+          handleOnChangeItemValues({
+            target: { name: "item3", value: `<${x1X2.item3.x2}` },
+          });
+          break;
+        }
+        break;
+        break;
+      case 4:
+        if (type === ">") {
+          handleOnChangeItemValues({
+            target: { name: "item4", value: `<${x1X2.item4.x1}` },
+          });
+          break;
+        }
+        if (type === "-") {
+          handleOnChangeItemValues({
+            target: {
+              name: "item4",
+              value: `${x1X2.item4.x1}-${x1X2.item4.x2}`,
+            },
+          });
+          break;
+        }
+        if (type === "<") {
+          handleOnChangeItemValues({
+            target: { name: "item4", value: `<${x1X2.item4.x2}` },
+          });
+          break;
+        }
+        break;
+        break;
+      case 5:
+        if (type === ">") {
+          handleOnChangeItemValues({
+            target: { name: "item5", value: `<${x1X2.item5.x1}` },
+          });
+          break;
+        }
+        if (type === "-") {
+          handleOnChangeItemValues({
+            target: {
+              name: "item5",
+              value: `${x1X2.item5.x1}-${x1X2.item5.x2}`,
+            },
+          });
+          break;
+        }
+        if (type === "<") {
+          handleOnChangeItemValues({
+            target: { name: "item5", value: `<${x1X2.item5.x2}` },
+          });
+          break;
+        }
+        break;
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <>
@@ -835,6 +991,7 @@ const PutDataManually = () => {
                     }))
                   }
                   color="primary"
+                  defaultSelectedKeys={""}
                 >
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
@@ -864,7 +1021,31 @@ const PutDataManually = () => {
                     />
                   </>
                 )}
-
+                {x1X2.item1.x1 !== "" && x1X2.item1.x2 !== "" && (
+                  <>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("<", 1)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"<"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("-", 1)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"-"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData(">", 1)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {">"}
+                    </Button>
+                  </>
+                )}
                 <Input
                   ref={inputRef1}
                   name="item1"
