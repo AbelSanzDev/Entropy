@@ -603,7 +603,10 @@ const PutDataManually = () => {
       case 1:
         if (type === ">") {
           handleOnChangeItemValues({
-            target: { name: "item1", value: `<${x1X2.item1.x1} ` },
+            target: {
+              name: "item1",
+              value: `${items.item1.datos} ${x1X2.item1.x1}> `,
+            },
           });
           break;
         }
@@ -611,14 +614,17 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item1",
-              value: `${x1X2.item1.x1}-${x1X2.item1.x2} `,
+              value: `${items.item1.datos} ${x1X2.item1.x1}-${x1X2.item1.x2} `,
             },
           });
           break;
         }
         if (type === "<") {
           handleOnChangeItemValues({
-            target: { name: "item1", value: `<${x1X2.item1.x2} ` },
+            target: {
+              name: "item1",
+              value: `${items.item1.datos} <${x1X2.item1.x2} `,
+            },
           });
           break;
         }
