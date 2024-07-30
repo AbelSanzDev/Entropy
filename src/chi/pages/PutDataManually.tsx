@@ -235,6 +235,35 @@ const PutDataManually = () => {
       }));
       return;
     }
+    if (
+      selectionNominalNumeric[name as keyof ItemNominalNumerico] === "numerico"
+    ) {
+      //*Este regex no permite poder validar que entren numeros que solo sean 1 2 3, ademas permite los espacios apra poder hacer la separacion de los datos
+      const regex = /^(?:[123](?: [123])*) ?$/;
+      if (!regex.test(value)) {
+        toast.error("Solo se permiten los datos 1 2 3");
+        return;
+      }
+      setItems((prevItems) => ({
+        ...prevItems,
+        [name]: {
+          ...prevItems[name as keyof ItemsData],
+          datos: value,
+        },
+      }));
+      setdatosArray((prevItems) => ({
+        ...prevItems,
+        [name]: {
+          ...prevItems[name as keyof ItemsData],
+          //*El array se crea con split cada que el string tenga un espacio en " " va a hacer otro elemento para el array
+          datosArray: value
+            .split(" ")
+            .filter((elemento) => elemento !== "")
+            .map(Number),
+        },
+      }));
+      return;
+    }
     for (let i: number = 0; i < lon; i++) {
       if (
         (value[i] === "1" && value[i + 1] === "1") ||
