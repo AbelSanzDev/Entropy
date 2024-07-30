@@ -205,7 +205,7 @@ const PutDataManually = () => {
     }
     //*Este for dentro tiene un if el cual valida que los datos sean solo 1 y 0 y el " "
     if (
-      selectionNominalNumeric[name as keyof ItemNominalNumerico] === "nominal"
+      selectionNominalNumeric[name as keyof ItemNominalNumerico] === "numerico"
     ) {
       if (
         x1X2[name as keyof ItemX1X2].x1 === "" &&
@@ -236,7 +236,7 @@ const PutDataManually = () => {
       return;
     }
     if (
-      selectionNominalNumeric[name as keyof ItemNominalNumerico] === "numerico"
+      selectionNominalNumeric[name as keyof ItemNominalNumerico] === "nominal"
     ) {
       //*Este regex no permite poder validar que entren numeros que solo sean 1 2 3, ademas permite los espacios apra poder hacer la separacion de los datos
       const regex = /^(?:[123](?: [123])*) ?$/;
@@ -251,15 +251,27 @@ const PutDataManually = () => {
           datos: value,
         },
       }));
+
       setdatosArray((prevItems) => ({
         ...prevItems,
         [name]: {
           ...prevItems[name as keyof ItemsData],
-          //*El array se crea con split cada que el string tenga un espacio en " " va a hacer otro elemento para el array
           datosArray: value
-            .split(" ")
-            .filter((elemento) => elemento !== "")
-            .map(Number),
+            .split(" ") // Divide el string en partes
+            .filter((elemento) => elemento !== "") // Filtra los espacios en blanco
+            .map(Number) // Convierte a número
+            .map((num) => {
+              switch (num) {
+                case 1:
+                  return "bajo";
+                case 2:
+                  return "medio";
+                case 3:
+                  return "alto";
+                default:
+                  return ""; // Por si acaso hay algún número fuera del rango
+              }
+            }),
         },
       }));
       return;
@@ -498,16 +510,35 @@ const PutDataManually = () => {
           toast.error("Debes seleccionar si el dato sara nominal o numerico");
           break;
         }
-        if (selectionNominalNumeric.item1 === "nominal") {
-          if (x1X2.item1.x1 === null || x1X2.item1.x2 === null) {
+        if (selectionNominalNumeric.item1 === "numerico") {
+          if (x1X2.item1.x1 === "" || x1X2.item1.x2 === "") {
+            toast.error("Debes de llenar los campos X1 X2");
+            break;
           }
+          if (x1X2.item1.x1 < x1X2.item1.x2) {
+            toast.error("X2 debe de ser mayor de X1");
+            break;
+          }
+          for (let i = 0; i < parseInt(instances) * 2; i++) {
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato += Math.random() >= 0.5 ? "1" : "0";
+            }
+          }
+          break;
         }
-        for (let i = 0; i < parseInt(instances) * 2; i++) {
-          if (i % 2 === 0) {
-            dato += " ";
-          } else {
-            dato += Math.random() >= 0.5 ? "1" : "0";
+        if (selectionNominalNumeric.item1 === "nominal") {
+          for (let i = 0; i < parseInt(instances) * 2; i++) {
+            if (i === 0) dato += Math.floor(Math.random() * 3) + 1;
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato += Math.floor(Math.random() * 3) + 1;
+            }
           }
+          handleOnChangeItemValues({ target: { name: "item1", value: dato } });
+          break;
         }
 
         for (let i = 0; i < parseInt(instances) * 2; i++) {
@@ -526,6 +557,22 @@ const PutDataManually = () => {
           toast.error("Tienes que poner un numero de instancias");
           break;
         }
+        if (selectionNominalNumeric.item1 === "") {
+          toast.error("Debes seleccionar si el dato sara nominal o numerico");
+          break;
+        }
+        if (selectionNominalNumeric.item2 === "numerico") {
+          if (x1X2.item2.x1 === "" || x1X2.item2.x2 === "") {
+            toast.error("Debes de llenar los campos X1 X2");
+            break;
+          }
+          if (x1X2.item2.x1 < x1X2.item2.x2) {
+            toast.error("X2 debe de ser mayor de X1");
+            break;
+          }
+        }
+        if (selectionNominalNumeric.item2 === "nominal") {
+        }
         for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
             dato += " ";
@@ -541,6 +588,22 @@ const PutDataManually = () => {
         if (instances === "") {
           toast.error("Tienes que poner un numero de instancias");
           break;
+        }
+        if (selectionNominalNumeric.item3 === "") {
+          toast.error("Debes seleccionar si el dato sara nominal o numerico");
+          break;
+        }
+        if (selectionNominalNumeric.item1 === "numerico") {
+          if (x1X2.item3.x1 === "" || x1X2.item3.x2 === "") {
+            toast.error("Debes de llenar los campos X1 X2");
+            break;
+          }
+          if (x1X2.item3.x1 < x1X2.item3.x2) {
+            toast.error("X2 debe de ser mayor de X1");
+            break;
+          }
+        }
+        if (selectionNominalNumeric.item3 === "nominal") {
         }
         for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
@@ -558,6 +621,22 @@ const PutDataManually = () => {
           toast.error("Tienes que poner un numero de instancias");
           break;
         }
+        if (selectionNominalNumeric.item4 === "") {
+          toast.error("Debes seleccionar si el dato sara nominal o numerico");
+          break;
+        }
+        if (selectionNominalNumeric.item4 === "numerico") {
+          if (x1X2.item4.x1 === "" || x1X2.item4.x2 === "") {
+            toast.error("Debes de llenar los campos X1 X2");
+            break;
+          }
+          if (x1X2.item4.x1 < x1X2.item4.x2) {
+            toast.error("X2 debe de ser mayor de X1");
+            break;
+          }
+        }
+        if (selectionNominalNumeric.item4 === "nominal") {
+        }
         for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
             dato += " ";
@@ -573,6 +652,22 @@ const PutDataManually = () => {
         if (instances === "") {
           toast.error("Tienes que poner un numero de instancias");
           break;
+        }
+        if (selectionNominalNumeric.item1 === "") {
+          toast.error("Debes seleccionar si el dato sara nominal o numerico");
+          break;
+        }
+        if (selectionNominalNumeric.item5 === "numerico") {
+          if (x1X2.item5.x1 === "" || x1X2.item5.x2 === "") {
+            toast.error("Debes de llenar los campos X1 X2");
+            break;
+          }
+          if (x1X2.item5.x1 < x1X2.item5.x2) {
+            toast.error("X2 debe de ser mayor de X1");
+            break;
+          }
+        }
+        if (selectionNominalNumeric.item5 === "nominal") {
         }
         for (let i = 0; i < parseInt(instances) * 2; i++) {
           if (i % 2 === 0) {
@@ -1055,7 +1150,7 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
-                {selectionNominalNumeric.item1 === "nominal" && (
+                {selectionNominalNumeric.item1 === "numerico" && (
                   <>
                     <Input
                       ref={inputRef1}
@@ -1105,7 +1200,7 @@ const PutDataManually = () => {
                     </Button>
                   </>
                 )}
-                {selectionNominalNumeric.item1 === "nominal" ? null : (
+                {selectionNominalNumeric.item1 === "numerico" ? null : (
                   <Input
                     ref={inputRef1}
                     name="item1"
@@ -1143,7 +1238,7 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
-                {selectionNominalNumeric.item2 === "nominal" && (
+                {selectionNominalNumeric.item2 === "numerico" && (
                   <>
                     <Input
                       ref={inputRef1}
@@ -1228,7 +1323,7 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
-                {selectionNominalNumeric.item3 === "nominal" && (
+                {selectionNominalNumeric.item3 === "numerico" && (
                   <>
                     <Input
                       ref={inputRef1}
@@ -1313,7 +1408,7 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
-                {selectionNominalNumeric.item4 === "nominal" && (
+                {selectionNominalNumeric.item4 === "numerico" && (
                   <>
                     <Input
                       ref={inputRef1}
@@ -1398,7 +1493,7 @@ const PutDataManually = () => {
                   <SelectItem key={"nominal"}>Nominal</SelectItem>
                   <SelectItem key={"numerico"}>Numerico</SelectItem>
                 </Select>
-                {selectionNominalNumeric.item5 === "nominal" && (
+                {selectionNominalNumeric.item5 === "numerico" && (
                   <>
                     <Input
                       ref={inputRef1}
