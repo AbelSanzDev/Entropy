@@ -605,7 +605,7 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item1",
-              value: `${items.item1.datos} ${x1X2.item1.x1}> `,
+              value: `${items.item1.datos} ${x1X2.item1.x2}> `,
             },
           });
           break;
@@ -623,16 +623,19 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item1",
-              value: `${items.item1.datos} <${x1X2.item1.x2} `,
+              value: `${items.item1.datos} <${x1X2.item1.x1} `,
             },
           });
           break;
         }
         break;
       case 2:
-        if (type === ">") {
+        if (type === "<") {
           handleOnChangeItemValues({
-            target: { name: "item2", value: `<${x1X2.item2.x1} ` },
+            target: {
+              name: "item2",
+              value: `${items.item2.datos} <${x1X2.item2.x1} `,
+            },
           });
           break;
         }
@@ -640,23 +643,29 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item2",
-              value: `${x1X2.item2.x1}-${x1X2.item2.x2}`,
+              value: `${items.item2.datos} ${x1X2.item2.x1}-${x1X2.item2.x2}`,
             },
           });
           break;
         }
-        if (type === "<") {
+        if (type === ">") {
           handleOnChangeItemValues({
-            target: { name: "item2", value: `<${x1X2.item2.x2}` },
+            target: {
+              name: "item2",
+              value: `${items.item2.datos} ${x1X2.item2.x2}>`,
+            },
           });
           break;
         }
         break;
         break;
       case 3:
-        if (type === ">") {
+        if (type === "<") {
           handleOnChangeItemValues({
-            target: { name: "item3", value: `<${x1X2.item3.x1}` },
+            target: {
+              name: "item3",
+              value: `${items.item3.datos} <${x1X2.item3.x1}`,
+            },
           });
           break;
         }
@@ -664,23 +673,29 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item3",
-              value: `${x1X2.item3.x1}-${x1X2.item3.x2}`,
+              value: `${items.item3.datos} ${x1X2.item3.x1}-${x1X2.item3.x2}`,
             },
           });
           break;
         }
-        if (type === "<") {
+        if (type === ">") {
           handleOnChangeItemValues({
-            target: { name: "item3", value: `<${x1X2.item3.x2}` },
+            target: {
+              name: "item3",
+              value: `${items.item3.datos} ${x1X2.item3.x2}>`,
+            },
           });
           break;
         }
         break;
         break;
       case 4:
-        if (type === ">") {
+        if (type === "<") {
           handleOnChangeItemValues({
-            target: { name: "item4", value: `<${x1X2.item4.x1}` },
+            target: {
+              name: "item4",
+              value: `${items.item4.datos} <${x1X2.item4.x1}`,
+            },
           });
           break;
         }
@@ -688,23 +703,29 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item4",
-              value: `${x1X2.item4.x1}-${x1X2.item4.x2}`,
+              value: `${items.item4.datos} ${x1X2.item4.x1}-${x1X2.item4.x2}`,
             },
           });
           break;
         }
-        if (type === "<") {
+        if (type === ">") {
           handleOnChangeItemValues({
-            target: { name: "item4", value: `<${x1X2.item4.x2}` },
+            target: {
+              name: "item4",
+              value: `${items.item4.datos} ${x1X2.item4.x2}>`,
+            },
           });
           break;
         }
         break;
         break;
       case 5:
-        if (type === ">") {
+        if (type === "<") {
           handleOnChangeItemValues({
-            target: { name: "item5", value: `<${x1X2.item5.x1}` },
+            target: {
+              name: "item5",
+              value: `${items.item5.datos} <${x1X2.item5.x1}`,
+            },
           });
           break;
         }
@@ -712,14 +733,17 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item5",
-              value: `${x1X2.item5.x1}-${x1X2.item5.x2}`,
+              value: `${items.item5.datos} ${x1X2.item5.x1}-${x1X2.item5.x2}`,
             },
           });
           break;
         }
-        if (type === "<") {
+        if (type === ">") {
           handleOnChangeItemValues({
-            target: { name: "item5", value: `<${x1X2.item5.x2}` },
+            target: {
+              name: "item5",
+              value: `${items.item5.datos} ${x1X2.item5.x2}>`,
+            },
           });
           break;
         }
@@ -1052,15 +1076,18 @@ const PutDataManually = () => {
                     </Button>
                   </>
                 )}
-                <Input
-                  ref={inputRef1}
-                  name="item1"
-                  onChange={(e) => handleOnChangeItemValues(e)}
-                  type="text"
-                  value={items.item1.datos}
-                  variant={"underlined"}
-                  label="Datos de Item1 "
-                />
+                {selectionNominalNumeric.item1 === "nominal" ? null : (
+                  <Input
+                    ref={inputRef1}
+                    name="item1"
+                    onChange={(e) => handleOnChangeItemValues(e)}
+                    type="text"
+                    value={items.item1.datos}
+                    variant={"underlined"}
+                    label="Datos de Item1 "
+                  />
+                )}
+
                 <Button
                   color="primary"
                   onClick={() => {
@@ -1110,6 +1137,31 @@ const PutDataManually = () => {
                       label="X2"
                       className="w-10"
                     />
+                  </>
+                )}
+                {x1X2.item2.x1 !== "" && x1X2.item2.x2 !== "" && (
+                  <>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("<", 2)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"<"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("-", 2)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"-"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData(">", 2)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {">"}
+                    </Button>
                   </>
                 )}
 
@@ -1172,6 +1224,31 @@ const PutDataManually = () => {
                     />
                   </>
                 )}
+                {x1X2.item3.x1 !== "" && x1X2.item3.x2 !== "" && (
+                  <>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("<", 3)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"<"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("-", 3)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"-"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData(">", 3)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {">"}
+                    </Button>
+                  </>
+                )}
 
                 <Input
                   name="item3"
@@ -1232,6 +1309,31 @@ const PutDataManually = () => {
                     />
                   </>
                 )}
+                {x1X2.item4.x1 !== "" && x1X2.item4.x2 !== "" && (
+                  <>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("<", 4)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"<"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("-", 4)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"-"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData(">", 4)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {">"}
+                    </Button>
+                  </>
+                )}
 
                 <Input
                   name="item4"
@@ -1290,6 +1392,31 @@ const PutDataManually = () => {
                       label="X2"
                       className="w-10"
                     />
+                  </>
+                )}
+                {x1X2.item5.x1 !== "" && x1X2.item5.x2 !== "" && (
+                  <>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("<", 5)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"<"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData("-", 5)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {"-"}
+                    </Button>
+                    <Button
+                      onClick={() => handleNominalSelectTypeData(">", 5)}
+                      isIconOnly
+                      aria-label="Like"
+                    >
+                      {">"}
+                    </Button>
                   </>
                 )}
 
