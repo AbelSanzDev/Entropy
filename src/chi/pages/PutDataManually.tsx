@@ -257,9 +257,9 @@ const PutDataManually = () => {
         [name]: {
           ...prevItems[name as keyof ItemsData],
           datosArray: value
-            .split(" ") // Divide el string en partes
-            .filter((elemento) => elemento !== "") // Filtra los espacios en blanco
-            .map(Number) // Convierte a número
+            .split(" ") //* Divide el string en partes
+            .filter((elemento) => elemento !== "") //* Filtra los espacios en blanco
+            .map(Number) //* Convierte a número
             .map((num) => {
               switch (num) {
                 case 1:
@@ -269,7 +269,7 @@ const PutDataManually = () => {
                 case 3:
                   return "alto";
                 default:
-                  return ""; // Por si acaso hay algún número fuera del rango
+                  return ""; //* Por si acaso hay algún número fuera del rango
               }
             }),
         },
@@ -515,17 +515,22 @@ const PutDataManually = () => {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item1.x1 < x1X2.item1.x2) {
+          if (x1X2.item1.x1 > x1X2.item1.x2) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
-          for (let i = 0; i < parseInt(instances) * 2; i++) {
+          //*Esto serar poder llenar de manera aleartoria los dato de tipo numericos
+          const datoAleatorios = `<${x1X2.item1.x1} ${x1X2.item1.x1}-${x1X2.item1.x2} ${x1X2.item1.x2}>`;
+          const lengthDatos: string[] = datoAleatorios.split(" ");
+          for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
             if (i % 2 === 0) {
               dato += " ";
             } else {
-              dato += Math.random() >= 0.5 ? "1" : "0";
+              dato +=
+                lengthDatos[Math.floor(Math.random() * lengthDatos.length)];
             }
           }
+          handleOnChangeItemValues({ target: { name: "item1", value: dato } });
           break;
         }
         if (selectionNominalNumeric.item1 === "nominal") {
@@ -541,13 +546,6 @@ const PutDataManually = () => {
           break;
         }
 
-        for (let i = 0; i < parseInt(instances) * 2; i++) {
-          if (i % 2 === 0) {
-            dato += " ";
-          } else {
-            dato += Math.random() >= 0.5 ? "1" : "0";
-          }
-        }
         //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
         handleOnChangeItemValues({ target: { name: "item1", value: dato } });
 
@@ -566,24 +564,39 @@ const PutDataManually = () => {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item2.x1 < x1X2.item2.x2) {
+          if (x1X2.item2.x1 > x1X2.item2.x2) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
+          const datoAleatorios = `<${x1X2.item2.x1} ${x1X2.item2.x1}-${x1X2.item2.x2} ${x1X2.item2.x2}>`;
+          const lengthDatos: string[] = datoAleatorios.split(" ");
+          for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato +=
+                lengthDatos[Math.floor(Math.random() * lengthDatos.length)];
+            }
+          }
+          handleOnChangeItemValues({ target: { name: "item2", value: dato } });
+          break;
         }
         if (selectionNominalNumeric.item2 === "nominal") {
-        }
-        for (let i = 0; i < parseInt(instances) * 2; i++) {
-          if (i % 2 === 0) {
-            dato += " ";
-          } else {
-            dato += Math.random() >= 0.5 ? "1" : "0";
+          for (let i = 0; i < parseInt(instances) * 2; i++) {
+            if (i === 0) dato += Math.floor(Math.random() * 3) + 1;
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato += Math.floor(Math.random() * 3) + 1;
+            }
           }
-        }
-        //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
-        handleOnChangeItemValues({ target: { name: "item2", value: dato } });
+          //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
+          handleOnChangeItemValues({ target: { name: "item2", value: dato } });
 
+          break;
+        }
         break;
+
       case 3:
         if (instances === "") {
           toast.error("Tienes que poner un numero de instancias");
@@ -593,29 +606,44 @@ const PutDataManually = () => {
           toast.error("Debes seleccionar si el dato sara nominal o numerico");
           break;
         }
-        if (selectionNominalNumeric.item1 === "numerico") {
+        if (selectionNominalNumeric.item3 === "numerico") {
           if (x1X2.item3.x1 === "" || x1X2.item3.x2 === "") {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item3.x1 < x1X2.item3.x2) {
+          if (x1X2.item3.x1 > x1X2.item3.x2) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
+          const datoAleatorios = `<${x1X2.item3.x1} ${x1X2.item3.x1}-${x1X2.item3.x2} ${x1X2.item3.x2}>`;
+          const lengthDatos: string[] = datoAleatorios.split(" ");
+          for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato +=
+                lengthDatos[Math.floor(Math.random() * lengthDatos.length)];
+            }
+          }
+          handleOnChangeItemValues({ target: { name: "item3", value: dato } });
+          break;
         }
         if (selectionNominalNumeric.item3 === "nominal") {
-        }
-        for (let i = 0; i < parseInt(instances) * 2; i++) {
-          if (i % 2 === 0) {
-            dato += " ";
-          } else {
-            dato += Math.random() >= 0.5 ? "1" : "0";
+          for (let i = 0; i < parseInt(instances) * 2; i++) {
+            if (i === 0) dato += Math.floor(Math.random() * 3) + 1;
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato += Math.floor(Math.random() * 3) + 1;
+            }
           }
-        }
-        //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
-        handleOnChangeItemValues({ target: { name: "item3", value: dato } });
+          //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
+          handleOnChangeItemValues({ target: { name: "item3", value: dato } });
 
+          break;
+        }
         break;
+
       case 4:
         if (instances === "") {
           toast.error("Tienes que poner un numero de instancias");
@@ -630,24 +658,39 @@ const PutDataManually = () => {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item4.x1 < x1X2.item4.x2) {
+          if (x1X2.item4.x1 > x1X2.item4.x2) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
+          const datoAleatorios = `<${x1X2.item4.x1} ${x1X2.item4.x1}-${x1X2.item4.x2} ${x1X2.item4.x2}>`;
+          const lengthDatos: string[] = datoAleatorios.split(" ");
+          for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato +=
+                lengthDatos[Math.floor(Math.random() * lengthDatos.length)];
+            }
+          }
+          handleOnChangeItemValues({ target: { name: "item4", value: dato } });
+          break;
         }
         if (selectionNominalNumeric.item4 === "nominal") {
-        }
-        for (let i = 0; i < parseInt(instances) * 2; i++) {
-          if (i % 2 === 0) {
-            dato += " ";
-          } else {
-            dato += Math.random() >= 0.5 ? "1" : "0";
+          for (let i = 0; i < parseInt(instances) * 2; i++) {
+            if (i === 0) dato += Math.floor(Math.random() * 3) + 1;
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato += Math.floor(Math.random() * 3) + 1;
+            }
           }
-        }
-        //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
-        handleOnChangeItemValues({ target: { name: "item4", value: dato } });
+          //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
+          handleOnChangeItemValues({ target: { name: "item4", value: dato } });
 
+          break;
+        }
         break;
+
       case 5:
         if (instances === "") {
           toast.error("Tienes que poner un numero de instancias");
@@ -662,24 +705,39 @@ const PutDataManually = () => {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item5.x1 < x1X2.item5.x2) {
+          if (x1X2.item5.x1 > x1X2.item5.x2) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
+          const datoAleatorios = `<${x1X2.item5.x1} ${x1X2.item5.x1}-${x1X2.item5.x2} ${x1X2.item5.x2}>`;
+          const lengthDatos: string[] = datoAleatorios.split(" ");
+          for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato +=
+                lengthDatos[Math.floor(Math.random() * lengthDatos.length)];
+            }
+          }
+          handleOnChangeItemValues({ target: { name: "item5", value: dato } });
+          break;
         }
         if (selectionNominalNumeric.item5 === "nominal") {
-        }
-        for (let i = 0; i < parseInt(instances) * 2; i++) {
-          if (i % 2 === 0) {
-            dato += " ";
-          } else {
-            dato += Math.random() >= 0.5 ? "1" : "0";
+          for (let i = 0; i < parseInt(instances) * 2; i++) {
+            if (i === 0) dato += Math.floor(Math.random() * 3) + 1;
+            if (i % 2 === 0) {
+              dato += " ";
+            } else {
+              dato += Math.floor(Math.random() * 3) + 1;
+            }
           }
-        }
-        //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
-        handleOnChangeItemValues({ target: { name: "item5", value: dato } });
+          //*Se llama la funcion para poder genera el  evento y poder poner todos los datos en tiempo real en la tabla y asi mismo que se conviertan a arreglo
+          handleOnChangeItemValues({ target: { name: "item5", value: dato } });
 
+          break;
+        }
         break;
+
       case 6:
         if (instances === "") {
           toast.error("Tienes que poner un numero de instancias");
