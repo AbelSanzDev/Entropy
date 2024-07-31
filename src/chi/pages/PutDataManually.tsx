@@ -214,6 +214,10 @@ const PutDataManually = () => {
         toast.error("Llena los valores X1 X2");
         return;
       }
+      if (x1X2[name as keyof ItemX1X2].x1 > x1X2[name as keyof ItemX1X2].x2) {
+        toast.error("X2 debe de se mayor a X1");
+        return;
+      }
       setItems((prevItems) => ({
         ...prevItems,
         [name]: {
@@ -1258,6 +1262,7 @@ const PutDataManually = () => {
                     </Button>
                   </>
                 )}
+
                 {selectionNominalNumeric.item1 === "numerico" ? null : (
                   <Input
                     ref={inputRef1}
@@ -1346,15 +1351,17 @@ const PutDataManually = () => {
                     </Button>
                   </>
                 )}
+                {selectionNominalNumeric.item2 === "numerico" ? null : (
+                  <Input
+                    name="item2"
+                    onChange={(e) => handleOnChangeItemValues(e)}
+                    type="text"
+                    value={items.item2.datos}
+                    variant={"underlined"}
+                    label="Datos de Item2"
+                  />
+                )}
 
-                <Input
-                  name="item2"
-                  onChange={(e) => handleOnChangeItemValues(e)}
-                  type="text"
-                  value={items.item2.datos}
-                  variant={"underlined"}
-                  label="Datos de Item2"
-                />
                 <Button
                   color="primary"
                   onClick={() => {
@@ -1431,15 +1438,17 @@ const PutDataManually = () => {
                     </Button>
                   </>
                 )}
+                {selectionNominalNumeric.item3 === "numerico" ? null : (
+                  <Input
+                    name="item3"
+                    onChange={(e) => handleOnChangeItemValues(e)}
+                    type="text"
+                    value={items.item3.datos}
+                    variant={"underlined"}
+                    label="Datos de Item3"
+                  />
+                )}
 
-                <Input
-                  name="item3"
-                  onChange={(e) => handleOnChangeItemValues(e)}
-                  type="text"
-                  value={items.item3.datos}
-                  variant={"underlined"}
-                  label="Datos de Item3"
-                />
                 <Button
                   color="primary"
                   onClick={() => {
@@ -1516,15 +1525,17 @@ const PutDataManually = () => {
                     </Button>
                   </>
                 )}
+                {selectionNominalNumeric.item4 === "numerico" ? null : (
+                  <Input
+                    name="item4"
+                    onChange={(e) => handleOnChangeItemValues(e)}
+                    type="text"
+                    value={items.item4.datos}
+                    variant={"underlined"}
+                    label="Datos de Item4"
+                  />
+                )}
 
-                <Input
-                  name="item4"
-                  onChange={(e) => handleOnChangeItemValues(e)}
-                  type="text"
-                  value={items.item4.datos}
-                  variant={"underlined"}
-                  label="Datos de Item4"
-                />
                 <Button
                   color="primary"
                   onClick={() => {
@@ -1601,15 +1612,17 @@ const PutDataManually = () => {
                     </Button>
                   </>
                 )}
+                {selectionNominalNumeric.item5 === "numerico" ? null : (
+                  <Input
+                    name="item5"
+                    onChange={(e) => handleOnChangeItemValues(e)}
+                    type="text"
+                    value={items.item5.datos}
+                    variant={"underlined"}
+                    label="Datos de Item5"
+                  />
+                )}
 
-                <Input
-                  name="item5"
-                  onChange={(e) => handleOnChangeItemValues(e)}
-                  type="text"
-                  value={items.item5.datos}
-                  variant={"underlined"}
-                  label="Datos de Item5"
-                />
                 <Button
                   color="primary"
                   onClick={() => {
