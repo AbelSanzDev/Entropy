@@ -5,7 +5,6 @@ import {
   Input,
   Select,
   SelectItem,
-  Tooltip,
 } from "@nextui-org/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -25,11 +24,31 @@ interface ItemFormat {
 }
 //*Interfaz para el formato del array de los valores
 interface ItemArrayFormat {
-  datosArray: number[];
+  datosArray: any[];
 }
 interface ItemX1X2Format {
   x1: string;
   x2: string;
+}
+
+interface TablasInstacias {
+  positivos: {
+    valor1: number;
+    valor2: number;
+    valor3: number;
+  };
+  negativos: {
+    valor1: number;
+    valor2: number;
+    valor3: number;
+  };
+  resultados: {
+    res1: number;
+    res2: number;
+    res3: number;
+    res4: number;
+    res5: number;
+  };
 }
 interface ItemX1X2 {
   item1: ItemX1X2Format;
@@ -52,6 +71,7 @@ interface ItemArrayObjetos {
   item3?: ItemArrayFormat;
   item4?: ItemArrayFormat;
   item5?: ItemArrayFormat;
+  clase?: ItemArrayFormat;
 }
 //*Interfaz para darle el formato a los 8 items permitidos
 interface ItemsData {
@@ -123,6 +143,103 @@ const PutDataManually = () => {
     item5: { x1: "", x2: "" },
   });
 
+  //**Todos estos useStates son para poder llenar lo datos de las tablas */
+  const [tabla1, setTabla1] = useState<TablasInstacias>({
+    positivos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    negativos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    resultados: {
+      res1: 0,
+      res2: 0,
+      res3: 0,
+      res4: 0,
+      res5: 0,
+    },
+  });
+  const [tabla2, setTabla2] = useState<TablasInstacias>({
+    positivos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    negativos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    resultados: {
+      res1: 0,
+      res2: 0,
+      res3: 0,
+      res4: 0,
+      res5: 0,
+    },
+  });
+  const [tabla3, setTabla3] = useState<TablasInstacias>({
+    positivos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    negativos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    resultados: {
+      res1: 0,
+      res2: 0,
+      res3: 0,
+      res4: 0,
+      res5: 0,
+    },
+  });
+  const [tabla4, setTabla4] = useState<TablasInstacias>({
+    positivos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    negativos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    resultados: {
+      res1: 0,
+      res2: 0,
+      res3: 0,
+      res4: 0,
+      res5: 0,
+    },
+  });
+  const [tabla5, setTabla5] = useState<TablasInstacias>({
+    positivos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    negativos: {
+      valor1: 0,
+      valor2: 0,
+      valor3: 0,
+    },
+    resultados: {
+      res1: 0,
+      res2: 0,
+      res3: 0,
+      res4: 0,
+      res5: 0,
+    },
+  });
+
   //!En  este se creara para poder alamacenar los datos nominales(Falta crear)...
 
   //*Este useEfffect es para poder cambiar el state en el caso de que algun item en el apartado nombre tiene valor de ser asi se activara la tabla
@@ -142,6 +259,7 @@ const PutDataManually = () => {
   //*Este useEffect es para cuando cambien los nuevosDatosUsados y asi poder compilar la funcion arregloObjetos
   useEffect(() => {
     arregloObjetos();
+    llenarTablas();
   }, [nuevosDatosUsados]);
   //*Esta funcion es para almacenar el valor nombre de los items
   const handleOnChangeItem = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -362,6 +480,7 @@ const PutDataManually = () => {
     const { datosArray: datos3 } = datosArray.item3;
     const { datosArray: datos4 } = datosArray.item4;
     const { datosArray: datos5 } = datosArray.item5;
+    const { datosArray: clase } = datosArray.clase;
 
     //*Estas variables son para el tamaño de cada string y saber si son del mismo length
     const dato1Length = datos1.length;
@@ -369,6 +488,7 @@ const PutDataManually = () => {
     const dato3Length = datos3.length;
     const dato4Length = datos4.length;
     const dato5Length = datos5.length;
+    const claseLength = clase.length;
 
     //*Arreglo de length del arreglo principal
     const allLength = [
@@ -377,7 +497,7 @@ const PutDataManually = () => {
       dato3Length,
       dato4Length,
       dato5Length,
-      ,
+      claseLength,
     ];
     //*Crear el nuevo arreglo solo de los datos que se van a utilizar
 
@@ -430,11 +550,94 @@ const PutDataManually = () => {
     if (dato5Length > 0) {
       objetosConDatos.item5 = { datosArray: datos5 };
     }
+    if (claseLength > 0) {
+      objetosConDatos.clase = { datosArray: clase };
+    }
 
     setNuevosDatosUsados(objetosConDatos);
     //*Logica de calculos
   };
-  // console.log(nuevosDatosUsados);
+
+  console.log(nuevosDatosUsados);
+
+  //*Funcion para poder llenar todas las tablas
+
+  const llenarTablas = () => {
+    //*calcular resultado 1 los postivos y negativos de la clase
+    let contadorClase = {
+      positivo: 0,
+      negativo: 0,
+    };
+    for (let i = 0; i < nuevosDatosUsados.clase?.datosArray.length!; i++) {
+      if (nuevosDatosUsados.clase?.datosArray[i] === 0) {
+        contadorClase.negativo++;
+      }
+      if (nuevosDatosUsados.clase?.datosArray[i] === 1) {
+        contadorClase.positivo++;
+      }
+    }
+    console.log(contadorClase);
+    if (nuevosDatosUsados.item1) {
+      let valores = {
+        postivos: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+        negativos: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+      };
+      for (let i = 0; i < nuevosDatosUsados.clase?.datosArray.length!; i++) {
+        if (selectionNominalNumeric.item1 === "nominal") {
+          console.log("entre");
+          console.log(nuevosDatosUsados.clase?.datosArray[i]);
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativos.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativos.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativos.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.postivos.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.postivos.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.postivos.valor3++;
+          }
+        }
+        if (selectionNominalNumeric.item1 === "numerico") {
+        }
+      }
+      console.log(valores);
+    }
+  };
 
   //*Esta funcion sirve para hacer un arreglo de objetos para el array de items
   const arregloObjetos = (): void => {
@@ -747,7 +950,7 @@ const PutDataManually = () => {
           toast.error("Tienes que poner un numero de instancias");
           break;
         }
-        for (let i = 0; i < parseInt(instances) * 2; i++) {
+        for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
           if (i % 2 === 0) {
             dato += " ";
           } else {
@@ -1662,13 +1865,13 @@ const PutDataManually = () => {
               color="warning"
               size="lg"
             >
-              Almecenar datos
+              Generar calculos
             </Button>
           </div>
           {datosHoja.length > 0 && (
             <div className="grid grid-cols-2 gap-2">
               <div className="my-5">
-                <div>
+                {/* <div>
                   <CheckboxGroup
                     isInvalid={isValid}
                     onChange={(e) => {
@@ -1682,17 +1885,17 @@ const PutDataManually = () => {
                       </Checkbox>
                     ))}
                   </CheckboxGroup>
-                </div>
-                <div className="mt-5">
-                  <Button
+                </div> */}
+                {/* <div className="mt-5">
+                  {/* <Button
                     onClick={handleSelectItemsSubmit}
                     radius="sm"
                     color="primary"
                     size="lg"
                   >
                     Seleccionar
-                  </Button>
-                </div>
+                  </Button> */}
+                {/* </div> */}
               </div>
             </div>
           )}
