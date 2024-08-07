@@ -605,7 +605,6 @@ const PutDataManually = () => {
       };
       for (let i = 0; i < nuevosDatosUsados.clase?.datosArray.length!; i++) {
         if (selectionNominalNumeric.item1 === "nominal") {
-          console.log("entre");
           console.log(nuevosDatosUsados.clase?.datosArray[i]);
           if (
             nuevosDatosUsados.item1.datosArray[i] === "bajo" &&
@@ -688,7 +687,6 @@ const PutDataManually = () => {
           }
         }
       }
-      console.log(resultadoClase);
       const p1 =
         valores.positivo.valor1 /
         (valores.positivo.valor1 + valores.negativo.valor1);
@@ -729,7 +727,6 @@ const PutDataManually = () => {
       // Calcula la entropía
       let resultadoFila3 = -(p31 * log32(p31) + p32 * log32(p32));
       if (isNaN(resultadoFila3)) resultadoFila3 = 0;
-      console.log(resultadoFila3);
       // setTabla1(valores);
       const entropyResult =
         resultadoClase -
@@ -742,8 +739,717 @@ const PutDataManually = () => {
           ((valores.positivo.valor3 + valores.negativo.valor3) /
             (contadorClase.positivo + contadorClase.negativo)) *
             resultadoFila3);
-      console.log(entropyResult);
       setTabla1({
+        positivos: {
+          valor1: valores.positivo.valor1,
+          valor2: valores.positivo.valor2,
+          valor3: valores.positivo.valor3,
+        },
+        negativos: {
+          valor1: valores.negativo.valor1,
+          valor2: valores.negativo.valor2,
+          valor3: valores.negativo.valor3,
+        },
+        resultados: {
+          res1: entropyResult,
+          res2: resultadoFila1,
+          res3: resultadoFila2,
+          res4: resultadoFila3,
+          res5: resultadoClase,
+        },
+      });
+    }
+
+    //*Operaciones item2
+    /**
+     *
+     *
+     ** ITEM2
+     *
+     *
+     */
+
+    if (nuevosDatosUsados.item2) {
+      let valores = {
+        positivo: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+        negativo: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+      };
+      for (let i = 0; i < nuevosDatosUsados.clase?.datosArray.length!; i++) {
+        if (selectionNominalNumeric.item2 === "nominal") {
+          console.log(nuevosDatosUsados.clase?.datosArray[i]);
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor3++;
+          }
+        }
+        if (selectionNominalNumeric.item2 === "numerico") {
+          console.log("entre");
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === `<${x1X2.item2.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] ===
+              `${x1X2.item2.x1}-${x1X2.item2.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === `${x1X2.item2.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === `<${x1X2.item2.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] ===
+              `${x1X2.item2.x1}-${x1X2.item2.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item2.datosArray[i] === `${x1X2.item2.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor3++;
+          }
+        }
+      }
+      const p1 =
+        valores.positivo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      const p2 =
+        valores.negativo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      //*Sacar resultados
+      const log2 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila1 = -(p1 * log2(p1) + p2 * log2(p2));
+
+      if (isNaN(resultadoFila1)) resultadoFila1 = 0;
+      console.log(resultadoFila1);
+      const p21 =
+        valores.positivo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      const p22 =
+        valores.negativo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      //*Sacar resultados
+      const log22 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila2 = -(p21 * log22(p21) + p22 * log22(p22));
+      if (isNaN(resultadoFila2)) resultadoFila2 = 0;
+      console.log(resultadoFila2);
+
+      const p31 =
+        valores.positivo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      const p32 =
+        valores.negativo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      //*Sacar resultados
+      const log32 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila3 = -(p31 * log32(p31) + p32 * log32(p32));
+      if (isNaN(resultadoFila3)) resultadoFila3 = 0;
+      // setTabla1(valores);
+      const entropyResult =
+        resultadoClase -
+        (((valores.positivo.valor1 + valores.negativo.valor1) /
+          (contadorClase.positivo + contadorClase.negativo)) *
+          resultadoFila1 +
+          ((valores.positivo.valor2 + valores.negativo.valor2) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila2 +
+          ((valores.positivo.valor3 + valores.negativo.valor3) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila3);
+      setTabla2({
+        positivos: {
+          valor1: valores.positivo.valor1,
+          valor2: valores.positivo.valor2,
+          valor3: valores.positivo.valor3,
+        },
+        negativos: {
+          valor1: valores.negativo.valor1,
+          valor2: valores.negativo.valor2,
+          valor3: valores.negativo.valor3,
+        },
+        resultados: {
+          res1: entropyResult,
+          res2: resultadoFila1,
+          res3: resultadoFila2,
+          res4: resultadoFila3,
+          res5: resultadoClase,
+        },
+      });
+    }
+    //*Item 3
+    /**
+     *
+     *
+     ** ITEM3
+     *
+     *
+     */
+    if (nuevosDatosUsados.item3) {
+      let valores = {
+        positivo: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+        negativo: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+      };
+      for (let i = 0; i < nuevosDatosUsados.clase?.datosArray.length!; i++) {
+        if (selectionNominalNumeric.item3 === "nominal") {
+          console.log(nuevosDatosUsados.clase?.datosArray[i]);
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor3++;
+          }
+        }
+        if (selectionNominalNumeric.item3 === "numerico") {
+          console.log("entre");
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === `<${x1X2.item3.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] ===
+              `${x1X2.item3.x1}-${x1X2.item3.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === `${x1X2.item3.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === `<${x1X2.item3.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] ===
+              `${x1X2.item3.x1}-${x1X2.item3.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item3.datosArray[i] === `${x1X2.item3.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor3++;
+          }
+        }
+      }
+      const p1 =
+        valores.positivo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      const p2 =
+        valores.negativo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      //*Sacar resultados
+      const log2 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila1 = -(p1 * log2(p1) + p2 * log2(p2));
+
+      if (isNaN(resultadoFila1)) resultadoFila1 = 0;
+      console.log(resultadoFila1);
+      const p21 =
+        valores.positivo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      const p22 =
+        valores.negativo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      //*Sacar resultados
+      const log22 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila2 = -(p21 * log22(p21) + p22 * log22(p22));
+      if (isNaN(resultadoFila2)) resultadoFila2 = 0;
+      console.log(resultadoFila2);
+
+      const p31 =
+        valores.positivo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      const p32 =
+        valores.negativo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      //*Sacar resultados
+      const log32 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila3 = -(p31 * log32(p31) + p32 * log32(p32));
+      if (isNaN(resultadoFila3)) resultadoFila3 = 0;
+      // setTabla1(valores);
+      const entropyResult =
+        resultadoClase -
+        (((valores.positivo.valor1 + valores.negativo.valor1) /
+          (contadorClase.positivo + contadorClase.negativo)) *
+          resultadoFila1 +
+          ((valores.positivo.valor2 + valores.negativo.valor2) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila2 +
+          ((valores.positivo.valor3 + valores.negativo.valor3) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila3);
+      setTabla3({
+        positivos: {
+          valor1: valores.positivo.valor1,
+          valor2: valores.positivo.valor2,
+          valor3: valores.positivo.valor3,
+        },
+        negativos: {
+          valor1: valores.negativo.valor1,
+          valor2: valores.negativo.valor2,
+          valor3: valores.negativo.valor3,
+        },
+        resultados: {
+          res1: entropyResult,
+          res2: resultadoFila1,
+          res3: resultadoFila2,
+          res4: resultadoFila3,
+          res5: resultadoClase,
+        },
+      });
+    }
+    //*Item 4
+    /**
+     *
+     *
+     ** ITEM4
+     *
+     *
+     */
+    if (nuevosDatosUsados.item4) {
+      let valores = {
+        positivo: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+        negativo: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+      };
+      for (let i = 0; i < nuevosDatosUsados.clase?.datosArray.length!; i++) {
+        if (selectionNominalNumeric.item4 === "nominal") {
+          console.log(nuevosDatosUsados.clase?.datosArray[i]);
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor3++;
+          }
+        }
+        if (selectionNominalNumeric.item4 === "numerico") {
+          console.log("entre");
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === `<${x1X2.item4.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] ===
+              `${x1X2.item4.x1}-${x1X2.item4.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === `${x1X2.item4.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === `<${x1X2.item4.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] ===
+              `${x1X2.item4.x1}-${x1X2.item4.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item4.datosArray[i] === `${x1X2.item4.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor3++;
+          }
+        }
+      }
+      const p1 =
+        valores.positivo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      const p2 =
+        valores.negativo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      //*Sacar resultados
+      const log2 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila1 = -(p1 * log2(p1) + p2 * log2(p2));
+
+      if (isNaN(resultadoFila1)) resultadoFila1 = 0;
+      console.log(resultadoFila1);
+      const p21 =
+        valores.positivo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      const p22 =
+        valores.negativo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      //*Sacar resultados
+      const log22 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila2 = -(p21 * log22(p21) + p22 * log22(p22));
+      if (isNaN(resultadoFila2)) resultadoFila2 = 0;
+      console.log(resultadoFila2);
+
+      const p31 =
+        valores.positivo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      const p32 =
+        valores.negativo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      //*Sacar resultados
+      const log32 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila3 = -(p31 * log32(p31) + p32 * log32(p32));
+      if (isNaN(resultadoFila3)) resultadoFila3 = 0;
+      // setTabla1(valores);
+      const entropyResult =
+        resultadoClase -
+        (((valores.positivo.valor1 + valores.negativo.valor1) /
+          (contadorClase.positivo + contadorClase.negativo)) *
+          resultadoFila1 +
+          ((valores.positivo.valor2 + valores.negativo.valor2) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila2 +
+          ((valores.positivo.valor3 + valores.negativo.valor3) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila3);
+      setTabla4({
+        positivos: {
+          valor1: valores.positivo.valor1,
+          valor2: valores.positivo.valor2,
+          valor3: valores.positivo.valor3,
+        },
+        negativos: {
+          valor1: valores.negativo.valor1,
+          valor2: valores.negativo.valor2,
+          valor3: valores.negativo.valor3,
+        },
+        resultados: {
+          res1: entropyResult,
+          res2: resultadoFila1,
+          res3: resultadoFila2,
+          res4: resultadoFila3,
+          res5: resultadoClase,
+        },
+      });
+    }
+    //*Item 5
+    /**
+     *
+     *
+     ** ITEM5
+     *
+     *
+     */
+    if (nuevosDatosUsados.item5) {
+      let valores = {
+        positivo: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+        negativo: {
+          valor1: 0,
+          valor2: 0,
+          valor3: 0,
+        },
+      };
+      for (let i = 0; i < nuevosDatosUsados.clase?.datosArray.length!; i++) {
+        if (selectionNominalNumeric.item5 === "nominal") {
+          console.log(nuevosDatosUsados.clase?.datosArray[i]);
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === "bajo" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === "medio" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === "alto" &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor3++;
+          }
+        }
+        if (selectionNominalNumeric.item5 === "numerico") {
+          console.log("entre");
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === `<${x1X2.item5.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] ===
+              `${x1X2.item5.x1}-${x1X2.item5.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === `${x1X2.item5.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === `<${x1X2.item5.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] ===
+              `${x1X2.item5.x1}-${x1X2.item5.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item5.datosArray[i] === `${x1X2.item5.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor3++;
+          }
+        }
+      }
+      const p1 =
+        valores.positivo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      const p2 =
+        valores.negativo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      //*Sacar resultados
+      const log2 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila1 = -(p1 * log2(p1) + p2 * log2(p2));
+
+      if (isNaN(resultadoFila1)) resultadoFila1 = 0;
+      console.log(resultadoFila1);
+      const p21 =
+        valores.positivo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      const p22 =
+        valores.negativo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      //*Sacar resultados
+      const log22 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila2 = -(p21 * log22(p21) + p22 * log22(p22));
+      if (isNaN(resultadoFila2)) resultadoFila2 = 0;
+      console.log(resultadoFila2);
+
+      const p31 =
+        valores.positivo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      const p32 =
+        valores.negativo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      //*Sacar resultados
+      const log32 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila3 = -(p31 * log32(p31) + p32 * log32(p32));
+      if (isNaN(resultadoFila3)) resultadoFila3 = 0;
+      // setTabla1(valores);
+      const entropyResult =
+        resultadoClase -
+        (((valores.positivo.valor1 + valores.negativo.valor1) /
+          (contadorClase.positivo + contadorClase.negativo)) *
+          resultadoFila1 +
+          ((valores.positivo.valor2 + valores.negativo.valor2) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila2 +
+          ((valores.positivo.valor3 + valores.negativo.valor3) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila3);
+      setTabla5({
         positivos: {
           valor1: valores.positivo.valor1,
           valor2: valores.positivo.valor2,
@@ -766,6 +1472,10 @@ const PutDataManually = () => {
   };
 
   console.log(tabla1);
+  console.log(tabla2);
+  console.log(tabla3);
+  console.log(tabla4);
+  console.log(tabla5);
   //*Esta funcion sirve para hacer un arreglo de objetos para el array de items
   const arregloObjetos = (): void => {
     //*Es if valida que almenos la tabla tenga dos columnas con datos
