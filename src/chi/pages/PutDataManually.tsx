@@ -568,6 +568,7 @@ const PutDataManually = () => {
       positivo: 0,
       negativo: 0,
     };
+
     for (let i = 0; i < nuevosDatosUsados.clase?.datosArray.length!; i++) {
       if (nuevosDatosUsados.clase?.datosArray[i] === 0) {
         contadorClase.negativo++;
@@ -576,15 +577,27 @@ const PutDataManually = () => {
         contadorClase.positivo++;
       }
     }
-    console.log(contadorClase);
+    let resultadoClase: number = 0;
+    const p1 =
+      contadorClase.positivo /
+      (contadorClase.positivo + contadorClase.negativo);
+    const p2 =
+      contadorClase.negativo /
+      (contadorClase.positivo + contadorClase.negativo);
+    //*Sacar resultados
+    const log2 = (x: number) => Math.log(x) / Math.log(2);
+
+    // Calcula la entropía
+    resultadoClase = -(p1 * log2(p1) + p2 * log2(p2));
+
     if (nuevosDatosUsados.item1) {
       let valores = {
-        postivos: {
+        positivo: {
           valor1: 0,
           valor2: 0,
           valor3: 0,
         },
-        negativos: {
+        negativo: {
           valor1: 0,
           valor2: 0,
           valor3: 0,
@@ -599,46 +612,160 @@ const PutDataManually = () => {
             nuevosDatosUsados.clase?.datosArray[i] === 0
           ) {
             console.log("entre1");
-            valores.negativos.valor1++;
+            valores.negativo.valor1++;
           }
           if (
             nuevosDatosUsados.item1.datosArray[i] === "medio" &&
             nuevosDatosUsados.clase?.datosArray[i] === 0
           ) {
-            valores.negativos.valor2++;
+            valores.negativo.valor2++;
           }
           if (
             nuevosDatosUsados.item1.datosArray[i] === "alto" &&
             nuevosDatosUsados.clase?.datosArray[i] === 0
           ) {
-            valores.negativos.valor3++;
+            valores.negativo.valor3++;
           }
           if (
             nuevosDatosUsados.item1.datosArray[i] === "bajo" &&
             nuevosDatosUsados.clase?.datosArray[i] === 1
           ) {
-            valores.postivos.valor1++;
+            valores.positivo.valor1++;
           }
           if (
             nuevosDatosUsados.item1.datosArray[i] === "medio" &&
             nuevosDatosUsados.clase?.datosArray[i] === 1
           ) {
-            valores.postivos.valor2++;
+            valores.positivo.valor2++;
           }
           if (
             nuevosDatosUsados.item1.datosArray[i] === "alto" &&
             nuevosDatosUsados.clase?.datosArray[i] === 1
           ) {
-            valores.postivos.valor3++;
+            valores.positivo.valor3++;
           }
         }
         if (selectionNominalNumeric.item1 === "numerico") {
+          console.log("entre");
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === `<${x1X2.item1.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            console.log("entre1");
+            valores.negativo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] ===
+              `${x1X2.item1.x1}-${x1X2.item1.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === `${x1X2.item1.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 0
+          ) {
+            valores.negativo.valor3++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === `<${x1X2.item1.x1}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor1++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] ===
+              `${x1X2.item1.x1}-${x1X2.item1.x2}` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor2++;
+          }
+          if (
+            nuevosDatosUsados.item1.datosArray[i] === `${x1X2.item1.x2}>` &&
+            nuevosDatosUsados.clase?.datosArray[i] === 1
+          ) {
+            valores.positivo.valor3++;
+          }
         }
       }
-      console.log(valores);
+      console.log(resultadoClase);
+      const p1 =
+        valores.positivo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      const p2 =
+        valores.negativo.valor1 /
+        (valores.positivo.valor1 + valores.negativo.valor1);
+      //*Sacar resultados
+      const log2 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila1 = -(p1 * log2(p1) + p2 * log2(p2));
+
+      if (isNaN(resultadoFila1)) resultadoFila1 = 0;
+      console.log(resultadoFila1);
+      const p21 =
+        valores.positivo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      const p22 =
+        valores.negativo.valor2 /
+        (valores.positivo.valor2 + valores.negativo.valor2);
+      //*Sacar resultados
+      const log22 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila2 = -(p21 * log22(p21) + p22 * log22(p22));
+      if (isNaN(resultadoFila2)) resultadoFila2 = 0;
+      console.log(resultadoFila2);
+
+      const p31 =
+        valores.positivo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      const p32 =
+        valores.negativo.valor3 /
+        (valores.positivo.valor3 + valores.negativo.valor3);
+      //*Sacar resultados
+      const log32 = (x: number) => Math.log(x) / Math.log(2);
+
+      // Calcula la entropía
+      let resultadoFila3 = -(p31 * log32(p31) + p32 * log32(p32));
+      if (isNaN(resultadoFila3)) resultadoFila3 = 0;
+      console.log(resultadoFila3);
+      // setTabla1(valores);
+      const entropyResult =
+        resultadoClase -
+        (((valores.positivo.valor1 + valores.negativo.valor1) /
+          (contadorClase.positivo + contadorClase.negativo)) *
+          resultadoFila1 +
+          ((valores.positivo.valor2 + valores.negativo.valor2) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila2 +
+          ((valores.positivo.valor3 + valores.negativo.valor3) /
+            (contadorClase.positivo + contadorClase.negativo)) *
+            resultadoFila3);
+      console.log(entropyResult);
+      setTabla1({
+        positivos: {
+          valor1: valores.positivo.valor1,
+          valor2: valores.positivo.valor2,
+          valor3: valores.positivo.valor3,
+        },
+        negativos: {
+          valor1: valores.negativo.valor1,
+          valor2: valores.negativo.valor2,
+          valor3: valores.negativo.valor3,
+        },
+        resultados: {
+          res1: entropyResult,
+          res2: resultadoFila1,
+          res3: resultadoFila2,
+          res4: resultadoFila3,
+          res5: resultadoClase,
+        },
+      });
     }
   };
 
+  console.log(tabla1);
   //*Esta funcion sirve para hacer un arreglo de objetos para el array de items
   const arregloObjetos = (): void => {
     //*Es if valida que almenos la tabla tenga dos columnas con datos
@@ -695,14 +822,14 @@ const PutDataManually = () => {
     setDatosHoja(nuevoFormato);
   };
   //*Esta funcion valida si hay solo 2 items seleccionados
-  const handleItemsSelected = (e: string[]): void => {
-    if (e.length > 3) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-      setItemsSeleccionados(e);
-    }
-  };
+  // const handleItemsSelected = (e: string[]): void => {
+  //   if (e.length > 3) {
+  //     setIsValid(true);
+  //   } else {
+  //     setIsValid(false);
+  //     setItemsSeleccionados(e);
+  //   }
+  // };
 
   //*Esta funcion sirve para el llenado de datos aleatorios
   const handleLlenadoDeDatosAleatorios = (id: number): void => {
