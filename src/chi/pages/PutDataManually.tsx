@@ -1,11 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Select,
-  SelectItem,
-} from "@nextui-org/react";
+import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -115,14 +108,6 @@ const PutDataManually = () => {
   );
   //*En este useState se alamcenan todos los datos transformados que se quieren ver
   const [datosHoja, setDatosHoja] = useState<DatoHoja[]>([]); //* puede contener un arreglo de cualquier tipo de datos
-  //*Este useState es para poder lanzar el mansaje de validacion en caso de que se seleccionen mas de dos items
-  const [isValid, setIsValid] = useState<boolean>(false);
-  //*Esta alamacena los items seleccionadaso por el usuario en un arreglo
-  const [itemsSeleccionados, setItemsSeleccionados] = useState<string[]>([]);
-  //*Este useState es en donde se alamcenan los datos de los dos items
-  const [datosTablaContigencia, setDatosTablaContigencia] = useState<
-    DatoHoja[]
-  >([]);
   const [instances, setInstances] = useState<string>("");
   const [selectionNominalNumeric, setSetselectionNominalNumeric] =
     useState<ItemNominalNumerico>({
@@ -240,6 +225,13 @@ const PutDataManually = () => {
     },
   });
 
+  const [claseValor, setClaseValor] = useState({
+    positivo: 0,
+    negativo: 0,
+  });
+
+  const [maxValue, setMaxValue] = useState<number>(0);
+
   //!En  este se creara para poder alamacenar los datos nominales(Falta crear)...
 
   //*Este useEfffect es para poder cambiar el state en el caso de que algun item en el apartado nombre tiene valor de ser asi se activara la tabla
@@ -298,12 +290,6 @@ const PutDataManually = () => {
 
     setDatosHoja([]);
 
-    setIsValid(false);
-
-    setItemsSeleccionados([]);
-
-    setDatosTablaContigencia([]);
-
     setX1X2({
       item1: { x1: "", x2: "" },
       item2: { x1: "", x2: "" },
@@ -312,7 +298,7 @@ const PutDataManually = () => {
       item5: { x1: "", x2: "" },
     });
   };
-  console.log(items.item1);
+  // console.log(items.item1);
   const handleOnChangeItemValues = (e: ChangeEventOrObject): void => {
     const { name, value } = e.target;
     const lon = value.length;
@@ -558,7 +544,7 @@ const PutDataManually = () => {
     //*Logica de calculos
   };
 
-  console.log(nuevosDatosUsados);
+  // console.log(nuevosDatosUsados);
 
   //*Funcion para poder llenar todas las tablas
 
@@ -567,6 +553,13 @@ const PutDataManually = () => {
     let contadorClase = {
       positivo: 0,
       negativo: 0,
+    };
+    let resultadosFinales = {
+      res1: 0,
+      res2: 0,
+      res3: 0,
+      res4: 0,
+      res5: 0,
     };
 
     for (let i = 0; i < nuevosDatosUsados.clase?.datosArray.length!; i++) {
@@ -589,6 +582,8 @@ const PutDataManually = () => {
 
     // Calcula la entropía
     resultadoClase = -(p1 * log2(p1) + p2 * log2(p2));
+
+    setClaseValor(contadorClase);
 
     if (nuevosDatosUsados.item1) {
       let valores = {
@@ -758,6 +753,7 @@ const PutDataManually = () => {
           res5: resultadoClase,
         },
       });
+      resultadosFinales.res1 = entropyResult;
     }
 
     //*Operaciones item2
@@ -937,6 +933,7 @@ const PutDataManually = () => {
           res5: resultadoClase,
         },
       });
+      resultadosFinales.res2 = entropyResult;
     }
     //*Item 3
     /**
@@ -1114,6 +1111,7 @@ const PutDataManually = () => {
           res5: resultadoClase,
         },
       });
+      resultadosFinales.res3 = entropyResult;
     }
     //*Item 4
     /**
@@ -1291,6 +1289,7 @@ const PutDataManually = () => {
           res5: resultadoClase,
         },
       });
+      resultadosFinales.res4 = entropyResult;
     }
     //*Item 5
     /**
@@ -1468,14 +1467,20 @@ const PutDataManually = () => {
           res5: resultadoClase,
         },
       });
+      resultadosFinales.res4 = entropyResult;
     }
+
+    //*resultado ganador
+    console.log(resultadosFinales);
+    const maxValue = Math.max(...Object.values(resultadosFinales)).toFixed(2);
+    setMaxValue(parseFloat(maxValue));
   };
 
-  console.log(tabla1);
-  console.log(tabla2);
-  console.log(tabla3);
-  console.log(tabla4);
-  console.log(tabla5);
+  // console.log(tabla1);
+  // console.log(tabla2);
+  // console.log(tabla3);
+  // console.log(tabla4);
+  // console.log(tabla5);
   //*Esta funcion sirve para hacer un arreglo de objetos para el array de items
   const arregloObjetos = (): void => {
     //*Es if valida que almenos la tabla tenga dos columnas con datos
@@ -1804,22 +1809,6 @@ const PutDataManually = () => {
     }
   };
 
-  const handleSelectItemsSubmit = (): void => {
-    if (isValid || itemsSeleccionados.length < 3) {
-      toast.error("Solo puedes seleccionar TRES items");
-      return;
-    }
-    //*generar nuevo arreglo con los objetos que se va a trabajar
-    const nuevosDatosFiltrados: DatoHoja[] = datosHoja.map((dato) => {
-      const nuevoDato: DatoHoja = {};
-      itemsSeleccionados.forEach((item) => {
-        nuevoDato[item] = dato[item];
-      });
-      return nuevoDato;
-    });
-    //*Los nuevos datos fitrados osea los dos items
-    setDatosTablaContigencia(nuevosDatosFiltrados);
-  };
   const handleNumeroInstacias = (e: ChangeEvent<HTMLInputElement>) => {
     setInstances(e.target.value);
   };
@@ -1980,6 +1969,7 @@ const PutDataManually = () => {
     }
   };
 
+  console.log(maxValue, tabla1.resultados.res1);
   return (
     <>
       <div className="container mx-auto grid grid-cols-2 gap-5 ">
@@ -2705,37 +2695,513 @@ const PutDataManually = () => {
               Generar calculos
             </Button>
           </div>
-          {datosHoja.length > 0 && (
-            <div className="grid grid-cols-2 gap-2">
-              <div className="my-5">
-                {/* <div>
-                  <CheckboxGroup
-                    isInvalid={isValid}
-                    onChange={(e) => {
-                      handleItemsSelected(e);
-                    }}
-                    label="Selecciona solo dos items"
-                  >
-                    {Object.keys(datosHoja[0]).map((colum) => (
-                      <Checkbox key={colum} value={colum}>
-                        {colum}
-                      </Checkbox>
-                    ))}
-                  </CheckboxGroup>
-                </div> */}
-                {/* <div className="mt-5">
-                  {/* <Button
-                    onClick={handleSelectItemsSubmit}
-                    radius="sm"
-                    color="primary"
-                    size="lg"
-                  >
-                    Seleccionar
-                  </Button> */}
-                {/* </div> */}
+          <div className="grid grid-cols-2 gap-[1rem]">
+            {datosHoja.length > 0 && (
+              <div className="">
+                {tabla1 && (
+                  <div>
+                    <table
+                      className={`min-w-full my-6   ${
+                        parseFloat(tabla1.resultados.res1.toFixed(2)) ===
+                        maxValue
+                          ? "divide-y-4 divide-yellow-500"
+                          : "divide-y divide-gray-600"
+                      }  `}
+                    >
+                      <thead
+                        className={` ${
+                          parseFloat(tabla1.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-200"
+                            : "bg-white"
+                        } `}
+                      >
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Positivos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Negativos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Resultados
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        className={`${
+                          parseFloat(tabla1.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-100"
+                            : "bg-white"
+                        }  divide-y divide-gray-200`}
+                      >
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.positivo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.negativo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.resultados.res5.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.positivos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.negativos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.resultados.res2.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.positivos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.negativos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.resultados.res3.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.resultados.res4.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.resultados.res1.toFixed(2)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
-            </div>
-          )}
+            )}
+            {datosHoja.length > 0 && (
+              <div className="">
+                {tabla2 && (
+                  <div>
+                    <table
+                      className={`min-w-full my-6   ${
+                        parseFloat(tabla2.resultados.res1.toFixed(2)) ===
+                        maxValue
+                          ? "divide-y-4 divide-yellow-500"
+                          : "divide-y divide-gray-600"
+                      }  `}
+                    >
+                      <thead
+                        className={` ${
+                          parseFloat(tabla2.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-200"
+                            : "bg-white"
+                        } `}
+                      >
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Positivos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Negativos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Resultados
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        className={`${
+                          parseFloat(tabla2.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-100"
+                            : "bg-white"
+                        }  divide-y divide-gray-200`}
+                      >
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.positivo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.negativo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.resultados.res5.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.positivos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.negativos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.resultados.res2.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.positivos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.negativos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.resultados.res3.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.resultados.res4.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla2.resultados.res1.toFixed(2)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+            {datosHoja.length > 0 && (
+              <div className="">
+                {tabla3 && (
+                  <div>
+                    <table
+                      className={`min-w-full my-6   ${
+                        parseFloat(tabla3.resultados.res1.toFixed(2)) ===
+                        maxValue
+                          ? "divide-y-4 divide-yellow-500"
+                          : "divide-y divide-gray-600"
+                      }  `}
+                    >
+                      <thead
+                        className={` ${
+                          parseFloat(tabla3.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-200"
+                            : "bg-white"
+                        } `}
+                      >
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Positivos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Negativos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Resultados
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        className={`${
+                          parseFloat(tabla3.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-100"
+                            : "bg-white"
+                        }  divide-y divide-gray-200`}
+                      >
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.positivo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.negativo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla1.resultados.res5.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.positivos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.negativos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.resultados.res2.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.positivos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.negativos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.resultados.res3.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.resultados.res4.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla3.resultados.res1.toFixed(2)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+            {datosHoja.length > 0 && (
+              <div className="">
+                {tabla4 && (
+                  <div>
+                    <table
+                      className={`min-w-full my-6   ${
+                        parseFloat(tabla4.resultados.res1.toFixed(2)) ===
+                        maxValue
+                          ? "divide-y-4 divide-yellow-500"
+                          : "divide-y divide-gray-600"
+                      }  `}
+                    >
+                      <thead
+                        className={` ${
+                          parseFloat(tabla4.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-200"
+                            : "bg-white"
+                        } `}
+                      >
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Positivos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Negativos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Resultados
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        className={`${
+                          parseFloat(tabla4.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-100"
+                            : "bg-white"
+                        }  divide-y divide-gray-200`}
+                      >
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.positivo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.negativo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.resultados.res5.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.positivos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.negativos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.resultados.res2.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.positivos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.negativos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.resultados.res3.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.resultados.res4.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla4.resultados.res1.toFixed(2)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+            {datosHoja.length > 0 && (
+              <div className="">
+                {tabla5 && (
+                  <div>
+                    <table
+                      className={`min-w-full my-6   ${
+                        parseFloat(tabla5.resultados.res1.toFixed(2)) ===
+                        maxValue
+                          ? "divide-y-4 divide-yellow-500"
+                          : "divide-y divide-gray-600"
+                      }  `}
+                    >
+                      <thead
+                        className={` ${
+                          parseFloat(tabla5.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-200"
+                            : "bg-white"
+                        } `}
+                      >
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Positivos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Negativos
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Resultados
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        className={`${
+                          parseFloat(tabla5.resultados.res1.toFixed(2)) ===
+                          maxValue
+                            ? "bg-yellow-100"
+                            : "bg-white"
+                        }  divide-y divide-gray-200`}
+                      >
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.positivo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {claseValor.negativo}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.resultados.res5.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.positivos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.negativos.valor1}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.resultados.res2.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.positivos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.negativos.valor2}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.resultados.res3.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.resultados.res4.toFixed(2)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.positivos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.negativos.valor3}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {tabla5.resultados.res1.toFixed(2)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
         {/**En esta parte se mostraran los datos en una tabla */}
         <div className="mt-5">
