@@ -807,6 +807,11 @@ const ReadExcelFile = () => {
   const handleCreateTables = () => {
     for (let i = 0; i < divider; i++) {}
   };
+  const todosSonCero = (obj: Record<string, any>): boolean => {
+    return Object.values(obj).every((valor) => valor === 0);
+  };
+
+  console.log(tabla4);
 
   return (
     <div className=" container mx-auto">
@@ -950,7 +955,7 @@ const ReadExcelFile = () => {
                     {Object.keys(datosHoja[0])[1]}
                   </h1>
                 </div>
-                {tabla2 && (
+                {todosSonCero(tabla2.resultados) ? null : (
                   <div>
                     <table
                       className={`min-w-full my-6   ${
@@ -1056,7 +1061,7 @@ const ReadExcelFile = () => {
                     {Object.keys(datosHoja[0])[2]}
                   </h1>
                 </div>
-                {tabla3 && (
+                {todosSonCero(tabla3) ? null : (
                   <div>
                     <table
                       className={`min-w-full my-6   ${
@@ -1157,12 +1162,15 @@ const ReadExcelFile = () => {
             )}
             {datosHoja.length > 0 && (
               <div className="">
-                <div>
-                  <h1 className="text-2xl underline">
-                    {Object.keys(datosHoja[0])[3]}
-                  </h1>
-                </div>
-                {tabla4 && (
+                {todosSonCero(tabla4.resultados) ? null : (
+                  <div>
+                    <h1 className="text-2xl underline">
+                      {Object.keys(datosHoja[0])[3]}
+                    </h1>
+                  </div>
+                )}
+
+                {todosSonCero(tabla4.resultados) ? null : (
                   <div>
                     <table
                       className={`min-w-full my-6   ${
@@ -1263,12 +1271,14 @@ const ReadExcelFile = () => {
             )}
             {datosHoja.length > 0 && (
               <div className="">
-                <div>
-                  <h1 className="text-2xl underline">
-                    {Object.keys(datosHoja[0])[4]}
-                  </h1>
-                </div>
-                {tabla5 && (
+                {todosSonCero(tabla5.resultados) ? null : (
+                  <div>
+                    <h1 className="text-2xl underline">
+                      {Object.keys(datosHoja[0])[4]}
+                    </h1>
+                  </div>
+                )}
+                {todosSonCero(tabla5.resultados) ? null : (
                   <div>
                     <table
                       className={`min-w-full my-6   ${
