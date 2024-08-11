@@ -206,41 +206,478 @@ const ReadExcelFile = () => {
     }
 
     console.log(secciones);
+    let valores1 = {
+      positivos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+      negativos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+    };
+    let valores2 = {
+      positivos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+      negativos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+    };
+    let valores3 = {
+      positivos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+      negativos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+    };
+    let valores4 = {
+      positivos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+      negativos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+    };
+    let valores5 = {
+      positivos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+      negativos: {
+        valor1: 0,
+        valor2: 0,
+        valor3: 0,
+      },
+    };
 
+    let clase = {
+      positivo: 0,
+      negativo: 0,
+    };
     for (let i = 0; i < secciones[datos.length - 1].length; i++) {
       if (secciones[datos.length - 1][i] === 0) {
-        console.log(secciones[datos.length - 1][i]);
+        clase.negativo++;
       }
       if (secciones[datos.length - 1][i] === 1) {
-        console.log(secciones[datos.length - 1][i]);
+        clase.positivo++;
       }
     }
+    //*positivos contados
+    console.log(clase);
+    let resultadoClase: number = 0;
+    const p11 = clase.positivo / (clase.positivo + clase.negativo);
+    const p222 = clase.negativo / (clase.positivo + clase.negativo);
+    //*Sacar resultados
+    const log222 = (x: number) => Math.log(x) / Math.log(2);
+
+    // Calcula la entropía
+    resultadoClase = -(p11 * log222(p11) + p222 * log222(p222));
+    console.log(resultadoClase);
     //*Este for podria servir para poder hacer los calculos por separado sin la clase
-    for (let i = 0; i < secciones.length - 1; i++) {
-      for (let j = 0; j < secciones[i].length; j++) {
-        const valor = secciones[i][j];
+
+    for (let j = 0; j < secciones[0].length; j++) {
+      if (secciones[0]) {
+        const valor = secciones[0][j];
+
+        // console.log(valor && secciones[datos.length - 1][j] === 0);
+        if (valor) {
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores1.negativos.valor1++;
+          }
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores1.negativos.valor2++;
+          }
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores1.negativos.valor3++;
+          }
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores1.positivos.valor1++;
+          }
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores1.positivos.valor2++;
+          }
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores1.positivos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 0) {
+            valores1.negativos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 0) {
+            valores1.negativos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 0) {
+            valores1.negativos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 1) {
+            valores1.positivos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 1) {
+            valores1.positivos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 1) {
+            valores1.positivos.valor3++;
+          }
+        }
+      }
+      console.log(valores1);
+      if (secciones[1]) {
+        const valor = secciones[1][j];
         console.log(valor);
         if (valor) {
-          console.log("hola");
-          if (/^< \d+$/.test(valor?.toString())) {
-            console.log(valor);
-          } else if (/^\d+ - \d+$/.test(valor?.toString())) {
-            console.log(valor);
-          } else if (/^> \d+$/.test(valor?.toString())) {
-            console.log(valor);
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores2.negativos.valor1++;
           }
-          if (valor === 1) {
-            console.log(valor);
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores2.negativos.valor2++;
           }
-          if (valor === 2) {
-            console.log(valor);
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores2.negativos.valor3++;
           }
-          if (valor === 3) {
-            console.log(valor);
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores2.positivos.valor1++;
+          }
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores2.positivos.valor2++;
+          }
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores2.positivos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 0) {
+            valores2.negativos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 0) {
+            valores2.negativos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 0) {
+            valores2.negativos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 1) {
+            valores2.positivos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 1) {
+            valores2.positivos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 1) {
+            valores2.positivos.valor3++;
+          }
+        }
+      }
+      if (secciones[2]) {
+        const valor = secciones[2][j];
+        console.log(valor);
+        if (valor) {
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores3.negativos.valor1++;
+          }
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores3.negativos.valor2++;
+          }
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores3.negativos.valor3++;
+          }
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores3.positivos.valor1++;
+          }
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores3.positivos.valor2++;
+          }
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores3.positivos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 0) {
+            valores3.negativos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 0) {
+            valores3.negativos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 0) {
+            valores3.negativos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 1) {
+            valores3.positivos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 1) {
+            valores3.positivos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 1) {
+            valores3.positivos.valor3++;
+          }
+        }
+      }
+      if (secciones[3]) {
+        const valor = secciones[3][j];
+        console.log(valor);
+        if (valor) {
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores4.negativos.valor1++;
+          }
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores4.negativos.valor2++;
+          }
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores4.negativos.valor3++;
+          }
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores4.positivos.valor1++;
+          }
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores4.positivos.valor2++;
+          }
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores4.positivos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 0) {
+            valores4.negativos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 0) {
+            valores4.negativos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 0) {
+            valores4.negativos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 1) {
+            valores4.positivos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 1) {
+            valores4.positivos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 1) {
+            valores4.positivos.valor3++;
+          }
+        }
+      }
+      if (secciones[4]) {
+        const valor = secciones[4][j];
+        console.log(valor);
+        if (valor) {
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores5.negativos.valor1++;
+          }
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores5.negativos.valor2++;
+          }
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 0
+          ) {
+            valores5.negativos.valor3++;
+          }
+          if (
+            /^< \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores5.positivos.valor1++;
+          }
+          if (
+            /^\d+ - \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores5.positivos.valor2++;
+          }
+          if (
+            /^> \d+$/.test(valor?.toString()) &&
+            secciones[datos.length - 1][j] === 1
+          ) {
+            valores5.positivos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 0) {
+            valores5.negativos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 0) {
+            valores5.negativos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 0) {
+            valores5.negativos.valor3++;
+          }
+          if (valor === 1 && secciones[datos.length - 1][j] === 1) {
+            valores5.positivos.valor1++;
+          }
+          if (valor === 2 && secciones[datos.length - 1][j] === 1) {
+            valores5.positivos.valor2++;
+          }
+          if (valor === 3 && secciones[datos.length - 1][j] === 1) {
+            valores5.positivos.valor3++;
           }
         }
       }
     }
+
+    setClaseValor({
+      positivo: clase.positivo,
+      negativo: clase.negativo,
+    });
+    const p1 =
+      valores1.positivos.valor1 /
+      (valores1.positivos.valor1 + valores1.negativos.valor1);
+    const p2 =
+      valores1.negativos.valor1 /
+      (valores1.positivos.valor1 + valores1.negativos.valor1);
+    //*Sacar resultados
+    const log2 = (x: number) => Math.log(x) / Math.log(2);
+
+    // Calcula la entropía
+    let resultadoFila1 = -(p1 * log2(p1) + p2 * log2(p2));
+
+    if (isNaN(resultadoFila1)) resultadoFila1 = 0;
+    console.log(resultadoFila1);
+    const p21 =
+      valores1.positivos.valor2 /
+      (valores1.positivos.valor2 + valores1.negativos.valor2);
+    const p22 =
+      valores1.negativos.valor2 /
+      (valores1.positivos.valor2 + valores1.negativos.valor2);
+    //*Sacar resultados
+    const log22 = (x: number) => Math.log(x) / Math.log(2);
+
+    // Calcula la entropía
+    let resultadoFila2 = -(p21 * log22(p21) + p22 * log22(p22));
+    if (isNaN(resultadoFila2)) resultadoFila2 = 0;
+    console.log(resultadoFila2);
+
+    const p31 =
+      valores1.positivos.valor3 /
+      (valores1.positivos.valor3 + valores1.negativos.valor3);
+    const p32 =
+      valores1.negativos.valor3 /
+      (valores1.positivos.valor3 + valores1.negativos.valor3);
+    //*Sacar resultados
+    const log32 = (x: number) => Math.log(x) / Math.log(2);
+
+    // Calcula la entropía
+    let resultadoFila3 = -(p31 * log32(p31) + p32 * log32(p32));
+    if (isNaN(resultadoFila3)) resultadoFila3 = 0;
+    // setTabla1(valores);
+    const entropyResult1 =
+      resultadoClase -
+      (((valores1.positivos.valor1 + valores1.negativos.valor1) /
+        (clase.positivo + clase.negativo)) *
+        resultadoFila1 +
+        ((valores1.positivos.valor2 + valores1.negativos.valor2) /
+          (clase.positivo + clase.negativo)) *
+          resultadoFila2 +
+        ((valores1.positivos.valor3 + valores1.negativos.valor3) /
+          (clase.positivo + clase.negativo)) *
+          resultadoFila3);
+    console.log(entropyResult1);
+    setTabla1({
+      positivos: {
+        valor1: valores1.positivos.valor1,
+        valor2: valores1.positivos.valor2,
+        valor3: valores1.positivos.valor3,
+      },
+      negativos: {
+        valor1: valores1.negativos.valor1,
+        valor2: valores1.negativos.valor2,
+        valor3: valores1.negativos.valor3,
+      },
+      resultados: {
+        res1: entropyResult1,
+        res2: resultadoFila1,
+        res3: resultadoFila2,
+        res4: resultadoFila3,
+        res5: resultadoClase,
+      },
+    });
+    console.log(valores1);
+    console.log(valores2);
+    console.log(valores3);
+    console.log(valores4);
+    console.log(valores5);
   };
 
   const handleCreateTables = () => {
@@ -274,6 +711,111 @@ const ReadExcelFile = () => {
               <p className="text-xs text-gray-500">xlsx, xls</p>
             </div>
           </div>
+          {datosHoja && (
+            <div className="">
+              {tabla1 && (
+                <div className="mt-5">
+                  <div>
+                    <h1 className="text-2xl underline">
+                      {Object.keys(datosHoja[0])[0]}
+                    </h1>
+                  </div>
+                  <table
+                    className={`min-w-full my-6   ${
+                      parseFloat(tabla1.resultados.res1.toFixed(2)) === maxValue
+                        ? "divide-y-4 divide-yellow-500"
+                        : "divide-y divide-gray-600"
+                    }  `}
+                  >
+                    <thead
+                      className={` ${
+                        parseFloat(tabla1.resultados.res1.toFixed(2)) ===
+                        maxValue
+                          ? "bg-yellow-200"
+                          : "bg-white"
+                      } `}
+                    >
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Positivos
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Negativos
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Resultados
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      className={`${
+                        parseFloat(tabla1.resultados.res1.toFixed(2)) ===
+                        maxValue
+                          ? "bg-yellow-100"
+                          : "bg-white"
+                      }  divide-y divide-gray-200`}
+                    >
+                      <tr>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {claseValor.positivo}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {claseValor.negativo}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.resultados.res5.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.positivos.valor1}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.negativos.valor1}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.resultados.res2.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.positivos.valor2}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.negativos.valor2}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.resultados.res3.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.positivos.valor3}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.negativos.valor3}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.resultados.res4.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.positivos.valor3}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.negativos.valor3}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {tabla1.resultados.res1.toFixed(2)}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div>
