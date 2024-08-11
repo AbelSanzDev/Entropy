@@ -1569,7 +1569,7 @@ const PutDataManually = () => {
             break;
           }
           //*Esto serar poder llenar de manera aleartoria los dato de tipo numericos
-          const datoAleatorios = `<${x1X2.item1.x1} ${x1X2.item1.x1}-${x1X2.item1.x2} ${x1X2.item1.x2}>`;
+          const datoAleatorios = `<${x1X2.item1.x1} ${x1X2.item1.x1}-${x1X2.item1.x2} >${x1X2.item1.x2}`;
           const lengthDatos: string[] = datoAleatorios.split(" ");
           for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
             if (i % 2 === 0) {
@@ -1617,7 +1617,7 @@ const PutDataManually = () => {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
-          const datoAleatorios = `<${x1X2.item2.x1} ${x1X2.item2.x1}-${x1X2.item2.x2} ${x1X2.item2.x2}>`;
+          const datoAleatorios = `<${x1X2.item2.x1} ${x1X2.item2.x1}-${x1X2.item2.x2} >${x1X2.item2.x2}`;
           const lengthDatos: string[] = datoAleatorios.split(" ");
           for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
             if (i % 2 === 0) {
@@ -1664,7 +1664,7 @@ const PutDataManually = () => {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
-          const datoAleatorios = `<${x1X2.item3.x1} ${x1X2.item3.x1}-${x1X2.item3.x2} ${x1X2.item3.x2}>`;
+          const datoAleatorios = `<${x1X2.item3.x1} ${x1X2.item3.x1}-${x1X2.item3.x2} >${x1X2.item3.x2}`;
           const lengthDatos: string[] = datoAleatorios.split(" ");
           for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
             if (i % 2 === 0) {
@@ -1711,7 +1711,7 @@ const PutDataManually = () => {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
-          const datoAleatorios = `<${x1X2.item4.x1} ${x1X2.item4.x1}-${x1X2.item4.x2} ${x1X2.item4.x2}>`;
+          const datoAleatorios = `<${x1X2.item4.x1} ${x1X2.item4.x1}-${x1X2.item4.x2} >${x1X2.item4.x2}`;
           const lengthDatos: string[] = datoAleatorios.split(" ");
           for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
             if (i % 2 === 0) {
@@ -1758,7 +1758,7 @@ const PutDataManually = () => {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
-          const datoAleatorios = `<${x1X2.item5.x1} ${x1X2.item5.x1}-${x1X2.item5.x2} ${x1X2.item5.x2}>`;
+          const datoAleatorios = `<${x1X2.item5.x1} ${x1X2.item5.x1}-${x1X2.item5.x2} >${x1X2.item5.x2}`;
           const lengthDatos: string[] = datoAleatorios.split(" ");
           for (let i = 0; i < parseInt(instances) * 2 + 2; i++) {
             if (i % 2 === 0) {
@@ -1820,7 +1820,7 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item1",
-              value: `${items.item1.datos} ${x1X2.item1.x2}> `,
+              value: `${items.item1.datos} >${x1X2.item1.x2} `,
             },
           });
           break;
@@ -1867,7 +1867,7 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item2",
-              value: `${items.item2.datos} ${x1X2.item2.x2}>`,
+              value: `${items.item2.datos} >${x1X2.item2.x2}`,
             },
           });
           break;
@@ -1897,7 +1897,7 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item3",
-              value: `${items.item3.datos} ${x1X2.item3.x2}>`,
+              value: `${items.item3.datos} >${x1X2.item3.x2}`,
             },
           });
           break;
@@ -1927,7 +1927,7 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item4",
-              value: `${items.item4.datos} ${x1X2.item4.x2}>`,
+              value: `${items.item4.datos} >${x1X2.item4.x2}`,
             },
           });
           break;
@@ -1957,7 +1957,7 @@ const PutDataManually = () => {
           handleOnChangeItemValues({
             target: {
               name: "item5",
-              value: `${items.item5.datos} ${x1X2.item5.x2}>`,
+              value: `${items.item5.datos} >${x1X2.item5.x2}`,
             },
           });
           break;
@@ -2698,6 +2698,9 @@ const PutDataManually = () => {
           <div className="grid grid-cols-2 gap-[1rem]">
             {datosHoja.length > 0 && (
               <div className="">
+                <div>
+                  <h1 className="text-2xl underline">{items.item1.nombre}</h1>
+                </div>
                 {tabla1 && (
                   <div>
                     <table
@@ -2799,6 +2802,9 @@ const PutDataManually = () => {
             )}
             {datosHoja.length > 0 && (
               <div className="">
+                <div>
+                  <h1 className="text-2xl underline">{items.item2.nombre}</h1>
+                </div>
                 {tabla2 && (
                   <div>
                     <table
@@ -2900,6 +2906,9 @@ const PutDataManually = () => {
             )}
             {datosHoja.length > 0 && (
               <div className="">
+                <div>
+                  <h1 className="text-2xl underline">{items.item3.nombre}</h1>
+                </div>
                 {tabla3 && (
                   <div>
                     <table
@@ -3001,6 +3010,9 @@ const PutDataManually = () => {
             )}
             {datosHoja.length > 0 && (
               <div className="">
+                <div>
+                  <h1 className="text-2xl underline">{items.item4.nombre}</h1>
+                </div>
                 {tabla4 && (
                   <div>
                     <table
@@ -3102,6 +3114,9 @@ const PutDataManually = () => {
             )}
             {datosHoja.length > 0 && (
               <div className="">
+                <div>
+                  <h1 className="text-2xl underline">{items.item5.nombre}</h1>
+                </div>
                 {tabla5 && (
                   <div>
                     <table

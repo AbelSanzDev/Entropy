@@ -3,6 +3,20 @@ interface ComponentesProbs {
 }
 
 const MostrarTablaConDatos: React.FC<ComponentesProbs> = ({ datosHoja }) => {
+  // Función para determinar si una columna contiene solo 1, 2, 3
+  const esColumnaNumerica = (valores: any[]) => {
+    return valores.every((valor) => [1, 2, 3].includes(valor));
+  };
+
+  // Función para convertir los valores 1, 2, 3 en "Bajo", "Medio", "Alto"
+  const convertirValor = (valor: any, esNumerico: boolean) => {
+    if (!esNumerico) return valor;
+    if (valor === 1) return "Bajo";
+    if (valor === 2) return "Medio";
+    if (valor === 3) return "Alto";
+    return valor;
+  };
+
   return (
     <table className="min-w-full bg-white border-gray-200 shadow-md rounded-lg overflow-hidden">
       <thead className="bg-gray-100">
@@ -20,11 +34,15 @@ const MostrarTablaConDatos: React.FC<ComponentesProbs> = ({ datosHoja }) => {
       <tbody className="divide-y divide-gray-200">
         {datosHoja.map((fila, index) => (
           <tr key={index} className="transition-all hover:bg-gray-50">
-            {Object.values(fila).map((valor, index) => (
-              <td key={index} className="py-2 px-4 whitespace-nowrap">
-                {valor}
-              </td>
-            ))}
+            {Object.entries(fila).map(([clave, valor], index) => {
+              const columnaValores = datosHoja.map((f) => f[clave]);
+              const esNumerico = esColumnaNumerica(columnaValores);
+              return (
+                <td key={index} className="py-2 px-4 whitespace-nowrap">
+                  {convertirValor(valor, esNumerico)}
+                </td>
+              );
+            })}
           </tr>
         ))}
       </tbody>
