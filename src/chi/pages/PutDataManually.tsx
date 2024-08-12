@@ -234,6 +234,51 @@ const PutDataManually = () => {
 
   //!En  este se creara para poder alamacenar los datos nominales(Falta crear)...
 
+  useEffect(() => {
+    setItems((prev) => ({
+      ...prev,
+      item1: {
+        ...prev.item1,
+        datos: "",
+      },
+    }));
+  }, [selectionNominalNumeric.item1]);
+  useEffect(() => {
+    setItems((prev) => ({
+      ...prev,
+      item2: {
+        ...prev.item2,
+        datos: "",
+      },
+    }));
+  }, [selectionNominalNumeric.item2]);
+  useEffect(() => {
+    setItems((prev) => ({
+      ...prev,
+      item3: {
+        ...prev.item3,
+        datos: "",
+      },
+    }));
+  }, [selectionNominalNumeric.item3]);
+  useEffect(() => {
+    setItems((prev) => ({
+      ...prev,
+      item4: {
+        ...prev.item4,
+        datos: "",
+      },
+    }));
+  }, [selectionNominalNumeric.item4]);
+  useEffect(() => {
+    setItems((prev) => ({
+      ...prev,
+      item5: {
+        ...prev.item5,
+        datos: "",
+      },
+    }));
+  }, [selectionNominalNumeric.item5]);
   //*Este useEfffect es para poder cambiar el state en el caso de que algun item en el apartado nombre tiene valor de ser asi se activara la tabla
   useEffect(() => {
     if (
@@ -318,8 +363,20 @@ const PutDataManually = () => {
         toast.error("Llena los valores X1 X2");
         return;
       }
-      if (x1X2[name as keyof ItemX1X2].x1 > x1X2[name as keyof ItemX1X2].x2) {
+      if (
+        parseInt(x1X2[name as keyof ItemX1X2].x1) >=
+        parseInt(x1X2[name as keyof ItemX1X2].x2)
+      ) {
+        console.log(
+          x1X2[name as keyof ItemX1X2].x1,
+          parseInt(x1X2[name as keyof ItemX1X2].x2)
+        );
         toast.error("X2 debe de se mayor a X1");
+        return;
+      }
+
+      if (x1X2[name as keyof ItemX1X2].x1 === x1X2[name as keyof ItemX1X2].x2) {
+        toast.error("X2 No puede ser igual a X1");
         return;
       }
       setItems((prevItems) => ({
@@ -1467,7 +1524,7 @@ const PutDataManually = () => {
           res5: resultadoClase,
         },
       });
-      resultadosFinales.res4 = entropyResult;
+      resultadosFinales.res5 = entropyResult;
     }
 
     //*resultado ganador
@@ -1564,7 +1621,7 @@ const PutDataManually = () => {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item1.x1 > x1X2.item1.x2) {
+          if (parseInt(x1X2.item1.x1) >= parseInt(x1X2.item1.x2)) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
@@ -1613,7 +1670,7 @@ const PutDataManually = () => {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item2.x1 > x1X2.item2.x2) {
+          if (parseInt(x1X2.item2.x1) >= parseInt(x1X2.item2.x2)) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
@@ -1660,7 +1717,7 @@ const PutDataManually = () => {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item3.x1 > x1X2.item3.x2) {
+          if (parseInt(x1X2.item3.x1) >= parseInt(x1X2.item3.x2)) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
@@ -1707,7 +1764,7 @@ const PutDataManually = () => {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item4.x1 > x1X2.item4.x2) {
+          if (parseInt(x1X2.item4.x1) >= parseInt(x1X2.item4.x2)) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }
@@ -1754,7 +1811,7 @@ const PutDataManually = () => {
             toast.error("Debes de llenar los campos X1 X2");
             break;
           }
-          if (x1X2.item5.x1 > x1X2.item5.x2) {
+          if (parseInt(x1X2.item5.x1) >= parseInt(x1X2.item5.x2)) {
             toast.error("X2 debe de ser mayor de X1");
             break;
           }

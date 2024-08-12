@@ -135,8 +135,6 @@ const ReadExcelFile = () => {
 
   const [maxValue, setMaxValue] = useState<number>(0);
 
-  const [divider, setDivider] = useState(0);
-
   //*Este use effect se utiliza para que cuando cambie el valor datosTablaContiugencia se compilen esas dos fuciones las cuales son la logica de todo el codigo
 
   //*leemos el excel con esta funcion
@@ -174,11 +172,6 @@ const ReadExcelFile = () => {
     if (datosHoja.length === 0) return;
     handleGenerate();
   }, [datosHoja]);
-
-  useEffect(() => {
-    if (divider === 0) return;
-    handleCreateTables();
-  }, [divider]);
 
   //*Esta funcion es para poder hacer los datos en formato array
   const handleGenerate = () => {
@@ -804,9 +797,7 @@ const ReadExcelFile = () => {
     }
     return entropyResult1;
   };
-  const handleCreateTables = () => {
-    for (let i = 0; i < divider; i++) {}
-  };
+
   const todosSonCero = (obj: Record<string, any>): boolean => {
     return Object.values(obj).every((valor) => valor === 0);
   };
